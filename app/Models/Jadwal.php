@@ -24,7 +24,7 @@ class Jadwal extends Model
         return $this->belongsTo(Tour::class);
     }
     
-    public function ticketTier()
+    public function ticketTiers()
     {
         return $this->hasMany(TicketTier::class);
     }
