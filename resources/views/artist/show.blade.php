@@ -3,7 +3,14 @@
 @section('content')
 <div class="container">
 
-    <a href="{{ route('tour.index') }}">&lt; Kembali</a>
+    @php
+        $backUrl = match(request('from')) {
+            'tour' => route('tour.index'),
+            'world-tour' => route('tour.world'),
+            default => route('landing'),
+        };
+    @endphp
+    <a href="{{ $backUrl }}">&lt; Kembali</a>
 
     <div class="row mt-3">
         <div class="col-md-8">
@@ -44,7 +51,7 @@
                     @endphp
 
                     @if ($totalKuota > 0)
-                        <a href="{{ route('tickettier.show', $jadwal->id) }}" class="btn btn-dark">GET TICKETS</a>
+                        <a href="{{ route('tickettier.show', ['jadwalId' => $jadwal->id, 'from' => request('from')]) }}" class="btn btn-dark">GET TICKETS</a>
                     @else
                         <button class="btn btn-secondary" disabled>SOLD OUT</button>
                     @endif

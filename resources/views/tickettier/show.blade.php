@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
 
-    <a href="{{ route('artist.show', $jadwal->tour->artist->id) }}">&lt; Kembali</a>
+    <a href="{{ route('artist.show', ['id' => $jadwal->tour->artist->id, 'from' => request('from')]) }}">&lt; Kembali</a>
 
     <h3 class="mt-3">{{ $jadwal->tour->nama_tour }}</h3>
     <p class="text-muted">
