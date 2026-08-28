@@ -44,7 +44,7 @@
                     @endphp
 
                     @if ($totalKuota > 0)
-                        <a href="#" class="btn btn-dark">GET TICKETS</a>
+                        <a href="{{ route('tickettier.show', $jadwal->id) }}" class="btn btn-dark">GET TICKETS</a>
                     @else
                         <button class="btn btn-secondary" disabled>SOLD OUT</button>
                     @endif
