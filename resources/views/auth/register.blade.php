@@ -69,6 +69,11 @@
                             </div>
                         </div>
                     </form>
+
+                    <div class="text-center mt-3">
+                        <span>{{ __('Sudah punya akun?') }}</span>
+                        <a href="{{ route('login') }}">{{ __('Login di sini') }}</a>
+                    </div>
                 </div>
             </div>
         </div>
