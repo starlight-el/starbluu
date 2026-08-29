@@ -30,12 +30,24 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-
+                        <li class="nav-item">
+                            <a href="{{ route('landing') }}" class="nav-link">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('tour.index') }}" class="nav-link">Tour</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('tour.world') }}" class="nav-link">World Tour</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">My Tickets</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
+                        
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
