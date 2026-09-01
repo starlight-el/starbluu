@@ -90,5 +90,31 @@
     </div>
 
     @stack('scripts')
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.26.25/sweetalert2.all.min.js"></script>
+
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: '{{ session('error') }}',
+                confirmButtonColor: '#212529',
+            });
+        </script>
+    @endif
+
+    @if (session('info'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: '{{ session('info') }}',
+                timer: 3000,
+                showConfirmButton: false,
+                timerProgressBar: true,
+            });
+        </script>
+    @endif
 </body>
 </html>
