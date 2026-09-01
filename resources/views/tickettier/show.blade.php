@@ -7,55 +7,69 @@
 
     <h3 class="mt-3">{{ $jadwal->tour->nama_tour }}</h3>
     <p class="text-muted">
-        {{ $jadwal->kota }}, {{ $jadwal->venue }} — 
+        {{ $jadwal->kota }}, {{ $jadwal->venue }} —
         {{ \Carbon\Carbon::parse($jadwal->tanggal)->format('Y.m.d') }}
         @if ($jadwal->jam)
             {{ \Carbon\Carbon::parse($jadwal->jam)->format('H:i') }} {{ $jadwal->timezone }}
         @endif
     </p>
 
-    @foreach ($jadwal->ticketTiers as $tier)
-        <div class="card mb-3">
-            <div class="card-body d-flex justify-content-between align-items-center">
-                <div>
-                    <h5 class="mb-1">{{ $tier->nama_tier }}</h5>
-                    <p class="mb-1">Rp {{ number_format($tier->harga, 0, ',', '.') }}</p>
-                    <p class="mb-0 text-muted">Kuota: {{ $tier->kuota }}</p>
-                </div>
+    @if (session('error'))
+        <div class="alert alert-danger">{{ session('error') }}</div>
+    @endif
 
-                <div class="d-flex align-items-center">
-                    <button type="button" class="btn btn-outline-secondary btn-kurang" data-tier="{{ $tier->id }}">-</button>
-                    <input type="number" class="form-control text-center mx-2 input-jumlah px-1"
-                        style="width: 40px" id="jumlah-{{ $tier->id }}" data-harga="{{ $tier->harga }}"
-                        value="0" min="0" max="{{ $tier->kuota }}" readonly>
-                    <button type="button" class="btn btn-outline-secondary btn-tambah" data-tier="{{ $tier->id }}">+</button>
+    <form method="POST" action="{{ route('checkout.store') }}">
+        @csrf
+        <input type="hidden" name="jadwal_id" value="{{ $jadwal->id }}">
+
+        @foreach ($jadwal->ticketTiers as $tier)
+            <div class="card mb-3">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-1">{{ $tier->nama_tier }}</h5>
+                        <p class="mb-1">Rp {{ number_format($tier->harga, 0, ',', '.') }}</p>
+                        <p class="mb-0 text-muted">Kuota: {{ $tier->kuota }}</p>
+                    </div>
+
+                    <div class="d-flex align-items-center">
+                        <button type="button" class="btn btn-outline-secondary btn-kurang" data-tier="{{ $tier->id }}">-</button>
+                        <input type="number" class="form-control text-center mx-2 input-jumlah px-1"
+                            style="width: 40px" id="jumlah-{{ $tier->id }}" name="tiers[{{ $tier->id }}]"
+                            data-harga="{{ $tier->harga }}"
+                            value="0" min="0" max="{{ $tier->kuota }}" readonly>
+                        <button type="button" class="btn btn-outline-secondary btn-tambah" data-tier="{{ $tier->id }}">+</button>
+                    </div>
                 </div>
             </div>
+        @endforeach
+
+        <p class="text-muted">*Maksimal 2 tiket per akun</p>
+
+        <hr>
+
+        <div class="d-flex justify-content-between align-items-center">
+            <h5>Total</h5>
+            <h5 id="total-harga">Rp 0</h5>
         </div>
-    @endforeach
 
-    <p class="text-muted">*Maksimal 2 tiket per akun</p>
+        @guest
+            <a href="{{ route('login') }}" class="btn btn-dark w-100 mt-2">PROCEED TO CHECKOUT</a>
+            <p class="text-muted mt-2">*Kamu perlu login/register dulu sebelum checkout</p>
+        @else
+            <button type="submit" class="btn btn-dark w-100 mt-2" id="btn-checkout">PROCEED TO CHECKOUT</button>
+        @endguest
 
-    <hr>
-
-    <div class="d-flex justify-content-between align-items-center">
-        <h5>Total</h5>
-        <h5 id="total-harga">Rp 0</h5>
-    </div>
-
-    <button type="button" class="btn btn-dark w-100 mt-2" id="btn-checkout">PROCEED TO CHECKOUT</button>
-
-    <p class="text-muted mt-2">*Jika belum login, akan diarahkan ke halaman Login/Register terlebih dahulu</p>
+    </form>
 
 </div>
 @endsection
 
 @push('scripts')
 <style>
-    input[type=number]::-webkit-inner-spin-button, 
-    input[type=number]::-webkit-outer-spin-button { 
-        -webkit-appearance: none; 
-        margin: 0; 
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
     }
     input[type=number] {
         -moz-appearance: textfield;

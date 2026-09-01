@@ -11,6 +11,7 @@ class Order extends Model
     
     protected $fillable = [
         'user_id',
+        'checkout_group_id',
         'ticket_tier_id',
         'jumlah_tiket',
         'total_harga',
