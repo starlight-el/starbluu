@@ -47,7 +47,7 @@
             </form>
         </div>
         <div class="col-6">
-            <a href="#" class="btn btn-dark w-100">LANJUT PEMBAYARAN</a>
+            <a href="{{ route('payment.show', $checkoutGroupId) }}" class="btn btn-dark w-100">LANJUT PEMBAYARAN</a>
         </div>
     </div>
 

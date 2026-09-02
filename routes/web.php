@@ -7,7 +7,7 @@ use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\TicketTierController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\CheckoutController;
-
+use App\Http\Controllers\PaymentController;
 
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 
@@ -22,3 +22,6 @@ Route::get('/jadwal/{jadwalId}/tiket', [TicketTierController::class, 'show'])->n
 Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 Route::get('/checkout/{checkoutGroupId}', [CheckoutController::class, 'show'])->name('checkout.show');
 Route::post('/checkout/{checkoutGroupId}/cancel', [CheckoutController::class, 'cancel'])->name('checkout.cancel');
+
+Route::get('/checkout/{checkoutGroupId}/payment', [PaymentController::class, 'show'])->name('payment.show');
+Route::post('/checkout/{checkoutGroupId}/payment', [PaymentController::class, 'process'])->name('payment.process');
