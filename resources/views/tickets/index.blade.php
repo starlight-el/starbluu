@@ -19,7 +19,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 @if ($order->status === 'paid')
                     <span class="badge bg-success">LUNAS</span>
-                    <a href="#" class="btn btn-dark btn-sm">LIHAT E-TICKET</a>
+                    <a href="{{ route('eticket.show', $order->id) }}" class="btn btn-dark btn-sm">LIHAT E-TICKET</a>
                 @elseif ($order->status === 'pending')
                     <span class="badge bg-warning text-dark">MENUNGGU PEMBAYARAN</span>
                     <a href="{{ route('payment.show', $order->checkout_group_id) }}" class="btn btn-dark btn-sm">LANJUT BAYAR</a>

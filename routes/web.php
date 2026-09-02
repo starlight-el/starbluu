@@ -9,6 +9,7 @@ use App\Http\Controllers\LandingController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\EticketController;
 
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 
@@ -28,3 +29,4 @@ Route::get('/checkout/{checkoutGroupId}/payment', [PaymentController::class, 'sh
 Route::post('/checkout/{checkoutGroupId}/payment', [PaymentController::class, 'process'])->name('payment.process');
 
 Route::get('/tickets', [TicketController::class, 'index'])->name('tickets.index');
+Route::get('/tickets/{orderId}/eticket', [EticketController::class, 'show'])->name('eticket.show');
