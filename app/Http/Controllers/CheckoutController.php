@@ -35,10 +35,13 @@ class CheckoutController extends Controller
 
         $totalTiketAktifUser = Order::where('user_id', Auth::id())
             ->whereIn('status', ['pending', 'paid'])
+            ->whereHas('ticketTier', function ($query) use ($jadwal) {
+                $query->where('jadwal_id', $jadwal->id);
+            })
             ->sum('jumlah_tiket');
 
         if (($totalTiketAktifUser + $totalTiketDiminta) > 2) {
-            return back()->with('error', 'Maksimal 2 tiket per akun. Kamu sudah punya ' . $totalTiketAktifUser . ' tiket aktif.');
+            return back()->with('error', 'Maksimal 2 tiket per jadwal konser. Kamu sudah punya ' . $totalTiketAktifUser . ' tiket aktif untuk jadwal ini.');
         }
 
         foreach ($tiersDipilih as $tierId => $jumlah) {
