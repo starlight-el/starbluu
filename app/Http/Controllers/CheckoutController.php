@@ -76,7 +76,7 @@ class CheckoutController extends Controller
         return redirect()->route('checkout.show', ['checkoutGroupId' => $checkoutGroupId]);
     }
 
-    public function show($checkoutGroupId)
+    public function show(string $checkoutGroupId)
     {
         $orders = Order::with('ticketTier.jadwal.tour.artist')
             ->where('checkout_group_id', $checkoutGroupId)
@@ -90,7 +90,7 @@ class CheckoutController extends Controller
         $this->batalkanJikaKedaluwarsa($orders);
 
         if ($orders->first()->status !== 'pending') {
-            return redirect()->route('landing')->with('info', 'Pesanan ini sudah tidak berlaku.');
+            return redirect()->route('tickets.index')->with('error', 'Pesanan ini sudah tidak berlaku.');
         }
 
         $totalBayar = $orders->sum('total_harga');
@@ -99,7 +99,7 @@ class CheckoutController extends Controller
         return view('checkout.show', compact('orders', 'totalBayar', 'expiredAt', 'checkoutGroupId'));
     }
 
-    public function cancel($checkoutGroupId)
+    public function cancel(string $checkoutGroupId)
     {
         $orders = Order::where('checkout_group_id', $checkoutGroupId)
             ->where('user_id', Auth::id())
@@ -111,10 +111,10 @@ class CheckoutController extends Controller
             $order->update(['status' => 'cancelled']);
         }
 
-        return redirect()->route('landing')->with('info', 'Pesanan berhasil dibatalkan.');
+        return redirect()->route('tickets.index')->with('info', 'Pesanan berhasil dibatalkan.');
     }
 
-    private function batalkanJikaKedaluwarsa($orders)
+    private function batalkanJikaKedaluwarsa(\Illuminate\Support\Collection $orders)
     {
         foreach ($orders as $order) {
             if ($order->status === 'pending' && $order->expired_at && $order->expired_at->isPast()) {

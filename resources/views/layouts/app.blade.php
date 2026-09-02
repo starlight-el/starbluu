@@ -40,7 +40,7 @@
                             <a href="{{ route('tour.world') }}" class="nav-link">World Tour</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">My Tickets</a>
+                            <a href="{{ route('tickets.index') }}" class="nav-link">My Tickets</a>
                         </li>
                     </ul>
 

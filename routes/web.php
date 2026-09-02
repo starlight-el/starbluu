@@ -8,6 +8,7 @@ use App\Http\Controllers\TicketTierController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\TicketController;
 
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 
@@ -25,3 +26,5 @@ Route::post('/checkout/{checkoutGroupId}/cancel', [CheckoutController::class, 'c
 
 Route::get('/checkout/{checkoutGroupId}/payment', [PaymentController::class, 'show'])->name('payment.show');
 Route::post('/checkout/{checkoutGroupId}/payment', [PaymentController::class, 'process'])->name('payment.process');
+
+Route::get('/tickets', [TicketController::class, 'index'])->name('tickets.index');

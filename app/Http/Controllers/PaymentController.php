@@ -29,7 +29,7 @@ class PaymentController extends Controller
         $this->batalkanJikaKedaluwarsa($orders);
 
         if ($orders->first()->status !== 'pending') {
-            return redirect()->route('landing')->with('info', 'Pesanan ini sudah tidak berlaku.');
+            return redirect()->route('tickets.index')->with('error', 'Pesanan ini sudah tidak berlaku.');
         }
 
         $totalBayar = $orders->sum('total_harga');
@@ -58,7 +58,7 @@ class PaymentController extends Controller
         $this->batalkanJikaKedaluwarsa($orders);
 
         if ($orders->first()->status !== 'pending') {
-            return redirect()->route('landing')->with('info', 'Pesanan ini sudah tidak berlaku.');
+            return redirect()->route('tickets.index')->with('error', 'Pesanan ini sudah tidak berlaku.');
         }
 
         $metodePembayaran = $request->kategori_pembayaran === 'transfer_bank'
@@ -83,7 +83,7 @@ class PaymentController extends Controller
             }
         });
 
-        return redirect()->route('landing')->with('info', 'Pembayaran berhasil, tiket kamu sudah lunas.');
+        return redirect()->route('tickets.index')->with('info', 'Pembayaran berhasil, tiket kamu sudah lunas.');
     }
 
     private function batalkanJikaKedaluwarsa(\Illuminate\Support\Collection $orders)
