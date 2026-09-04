@@ -39,7 +39,7 @@
                     <a href="{{ route('admin.dashboard') }}" class="nav-link px-0 text-dark {{ request()->routeIs('admin.dashboard') ? 'fw-bold' : '' }}">Dashboard</a>
                 </li>
                 <li class="nav-item mb-2">
-                    <a href="#" class="nav-link px-0 text-muted">Tour & Jadwal</a>
+                    <a href="{{ route('admin.tours.index') }}" class="nav-link px-0 text-dark {{ request()->routeIs('admin.tours.*') ? 'fw-bold' : '' }}">Tour & Jadwal</a>
                 </li>
                 <li class="nav-item mb-2">
                     <a href="{{ route('admin.artists.index') }}" class="nav-link px-0 text-dark {{ request()->routeIs('admin.artists.*') ? 'fw-bold' : '' }}">Artist</a>
@@ -67,7 +67,7 @@
             Swal.fire({
                 icon: 'error',
                 title: 'Gagal',
-                text: '{{ session('error') }}',
+                text: '{!! session('error') !!}',
                 confirmButtonColor: '#212529',
             });
         </script>
@@ -78,7 +78,7 @@
             Swal.fire({
                 icon: 'success',
                 title: 'Berhasil',
-                text: '{{ session('info') }}',
+                text: '{!! session('info') !!}',
                 timer: 3000,
                 showConfirmButton: false,
                 timerProgressBar: true,

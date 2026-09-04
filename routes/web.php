@@ -12,6 +12,7 @@ use App\Http\Controllers\TicketController;
 use App\Http\Controllers\EticketController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\ArtistController as AdminArtistController;
+use App\Http\Controllers\Admin\TourController as AdminTourController;
 
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 
@@ -44,5 +45,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         })->name('dashboard');
 
         Route::resource('artists', AdminArtistController::class)->except(['show']);
+        Route::resource('tours', AdminTourController::class)->except(['show']);
     });
 });
