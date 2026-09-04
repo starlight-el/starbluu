@@ -10,6 +10,8 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\EticketController;
+use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\ArtistController as AdminArtistController;
 
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 
@@ -30,3 +32,17 @@ Route::post('/checkout/{checkoutGroupId}/payment', [PaymentController::class, 'p
 
 Route::get('/tickets', [TicketController::class, 'index'])->name('tickets.index');
 Route::get('/tickets/{orderId}/eticket', [EticketController::class, 'show'])->name('eticket.show');
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [AdminAuthController::class, 'login'])->name('login.submit');
+    Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
+
+    Route::middleware('admin')->group(function () {
+        Route::get('/dashboard', function () {
+            return view('admin.dashboard');
+        })->name('dashboard');
+
+        Route::resource('artists', AdminArtistController::class)->except(['show']);
+    });
+});
