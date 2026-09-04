@@ -98,7 +98,7 @@
             Swal.fire({
                 icon: 'error',
                 title: 'Gagal',
-                text: '{{ session('error') }}',
+                text: '{!! session('error') !!}',
                 confirmButtonColor: '#212529',
             });
         </script>
@@ -109,7 +109,7 @@
             Swal.fire({
                 icon: 'success',
                 title: 'Berhasil',
-                text: '{{ session('info') }}',
+                text: '{!! session('info') !!}',
                 timer: 3000,
                 showConfirmButton: false,
                 timerProgressBar: true,

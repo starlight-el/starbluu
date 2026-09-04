@@ -41,7 +41,7 @@
             Swal.fire({
                 icon: 'error',
                 title: 'Gagal',
-                text: '{{ $errors->first() }}',
+                text: '{!! $errors->first() !!}',
                 confirmButtonColor: '#212529',
             });
         </script>
@@ -52,7 +52,7 @@
             Swal.fire({
                 icon: 'error',
                 title: 'Gagal',
-                text: '{{ session('error') }}',
+                text: '{!! session('error') !!}',
                 confirmButtonColor: '#212529',
             });
         </script>
@@ -63,7 +63,7 @@
             Swal.fire({
                 icon: 'info',
                 title: 'Info',
-                text: '{{ session('info') }}',
+                text: '{!! session('info') !!}',
                 confirmButtonColor: '#212529',
             });
         </script>
