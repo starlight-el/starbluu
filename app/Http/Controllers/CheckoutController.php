@@ -18,6 +18,10 @@ class CheckoutController extends Controller
 
     public function store(Request $request)
     {
+        if (Auth::user()->role === 'admin') {
+            return back()->with('error', 'Akun Admin tidak bisa melakukan pemesanan tiket.');
+        }
+
         $request->validate([
             'jadwal_id' => 'required|exists:jadwals,id',
             'tiers' => 'required|array',
