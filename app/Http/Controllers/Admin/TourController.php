@@ -2,43 +2,46 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Artist;
 use App\Models\Tour;
 use App\Models\Jadwal;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class TourController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $tours = Tour::with('artist')->withCount('jadwals')->orderBy('nama_tour')->get();
+        $tours = Tour::with('artist')->withCount('jadwals')->get()
+            ->sortBy(function ($tour) {
+                return $tour->kategori . '-' . $tour->artist->nama_grup;
+            })
+            ->values();
 
         return view('admin.tour.index', compact('tours'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        $artists = Artist::orderBy('nama_grup')->get();
+        $artists = Artist::doesntHave('tours')->orderBy('nama_grup')->get();
 
         return view('admin.tour.create', compact('artists'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
-            'artist_id' => 'required|exists:artists,id',
+            'artist_id' => [
+                'required',
+                'exists:artists,id',
+                function ($attribute, $value, $fail) {
+                    if (Tour::where('artist_id', $value)->exists()) {
+                        $fail('Artist ini sudah punya Tour. Gunakan Edit untuk menambah Jadwal.');
+                    }
+                },
+            ],
             'nama_tour' => 'required|string|max:255',
             'kategori' => 'required|in:tour,world_tour',
             'foto_banner_home' => 'required|image|max:2048',
@@ -80,32 +83,31 @@ class TourController extends Controller
         return redirect()->route('admin.tours.index')->with('info', 'Data Tour & Jadwal berhasil ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Tour $tour)
     {
         $tour->load('jadwals');
-        $artists = Artist::orderBy('nama_grup')->get();
+
+        $artists = Artist::where(function ($query) use ($tour) {
+            $query->doesntHave('tours')->orWhere('id', $tour->artist_id);
+        })->orderBy('nama_grup')->get();
 
         return view('admin.tour.edit', compact('tour', 'artists'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Tour $tour)
     {
         $request->validate([
-            'artist_id' => 'required|exists:artists,id',
+            'artist_id' => [
+                'required',
+                'exists:artists,id',
+                function ($attribute, $value, $fail) use ($tour) {
+                    $sudahDipakaiTourLain = Tour::where('artist_id', $value)->where('id', '!=', $tour->id)->exists();
+
+                    if ($sudahDipakaiTourLain) {
+                        $fail('Artist ini sudah punya Tour lain.');
+                    }
+                },
+            ],
             'nama_tour' => 'required|string|max:255',
             'kategori' => 'required|in:tour,world_tour',
             'foto_banner_home' => 'nullable|image|max:2048',
@@ -185,9 +187,6 @@ class TourController extends Controller
         return redirect()->route('admin.tours.index')->with('info', 'Data Tour & Jadwal berhasil diubah.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Tour $tour)
     {
         DB::transaction(function () use ($tour) {
