@@ -13,6 +13,7 @@ use App\Http\Controllers\EticketController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\ArtistController as AdminArtistController;
 use App\Http\Controllers\Admin\TourController as AdminTourController;
+use App\Http\Controllers\Admin\TicketTierController as AdminTicketTierController;
 
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 
@@ -46,5 +47,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::resource('artists', AdminArtistController::class)->except(['show']);
         Route::resource('tours', AdminTourController::class)->except(['show']);
+        Route::get('/ticket-tiers', [AdminTicketTierController::class, 'index'])->name('tickettiers.index');
+        Route::get('/ticket-tiers/create', [AdminTicketTierController::class, 'create'])->name('tickettiers.create');
+        Route::post('/ticket-tiers', [AdminTicketTierController::class, 'store'])->name('tickettiers.store');
+        Route::get('/ticket-tiers/{jadwal}/edit', [AdminTicketTierController::class, 'edit'])->name('tickettiers.edit');
+        Route::put('/ticket-tiers/{jadwal}', [AdminTicketTierController::class, 'update'])->name('tickettiers.update');
+        Route::delete('/ticket-tiers/{jadwal}', [AdminTicketTierController::class, 'destroy'])->name('tickettiers.destroy');
     });
 });
