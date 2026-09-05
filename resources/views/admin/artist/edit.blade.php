@@ -4,6 +4,16 @@
 <h3 class="fw-bold mb-1">Ubah Data Artist</h3>
 <p class="text-muted mb-4">Data lama (termasuk foto & daftar member) sudah terisi otomatis, ubah field yang diperlukan lalu simpan.</p>
 
+@php
+    $oldMembers = old('members');
+    if (!$oldMembers) {
+        $oldMembers = $artist->artistMembers->map(function ($m) {
+            return ['id' => $m->id, 'nama_member' => $m->nama_member];
+        })->toArray();
+    }
+    $oldDeletedMembers = old('deleted_members', []);
+@endphp
+
 <form action="{{ route('admin.artists.update', $artist->id) }}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PUT')
@@ -29,20 +39,29 @@
 
     <label class="form-label fw-bold">Anggota / Member</label>
     <div id="member-list">
-        @foreach ($artist->artistMembers as $index => $member)
+        @foreach ($oldMembers as $index => $member)
+            @php
+                $existingMember = !empty($member['id']) ? $artist->artistMembers->firstWhere('id', $member['id']) : null;
+            @endphp
             <div class="member-row d-flex align-items-center gap-2 mb-2">
-                @if ($member->foto_member)
-                    <img src="{{ Storage::url($member->foto_member) }}" alt="{{ $member->nama_member }}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%; flex-shrink: 0;">
+                @if ($existingMember && $existingMember->foto_member)
+                    <img src="{{ Storage::url($existingMember->foto_member) }}" alt="{{ $existingMember->nama_member }}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%; flex-shrink: 0;">
                 @endif
-                <input type="hidden" name="members[{{ $index }}][id]" value="{{ $member->id }}">
+                @if (!empty($member['id']))
+                    <input type="hidden" name="members[{{ $index }}][id]" value="{{ $member['id'] }}">
+                @endif
                 <input type="file" name="members[{{ $index }}][foto_member]" class="form-control" accept="image/*" style="flex: 1 1 50%;">
-                <input type="text" name="members[{{ $index }}][nama_member]" class="form-control" value="{{ $member->nama_member }}" placeholder="Nama Member" required style="flex: 1 1 50%;">
-                <button type="button" class="btn btn-outline-danger btn-remove-member flex-shrink-0" data-member-id="{{ $member->id }}">x</button>
+                <input type="text" name="members[{{ $index }}][nama_member]" class="form-control" value="{{ $member['nama_member'] ?? '' }}" placeholder="Nama Member" required style="flex: 1 1 50%;">
+                <button type="button" class="btn btn-outline-danger btn-remove-member flex-shrink-0" data-member-id="{{ $member['id'] ?? '' }}">x</button>
             </div>
         @endforeach
     </div>
 
-    <div id="deleted-members-container"></div>
+    <div id="deleted-members-container">
+        @foreach ($oldDeletedMembers as $deletedId)
+            <input type="hidden" name="deleted_members[]" value="{{ $deletedId }}">
+        @endforeach
+    </div>
 
     <button type="button" id="btn-add-member" class="btn btn-outline-dark btn-sm mb-4">+ TAMBAH MEMBER</button>
 
@@ -55,7 +74,7 @@
 
 @push('scripts')
 <script>
-let memberIndex = {{ $artist->artistMembers->count() }};
+let memberIndex = {{ count($oldMembers) }};
 
 document.getElementById('btn-add-member').addEventListener('click', function () {
     const container = document.getElementById('member-list');
@@ -63,7 +82,7 @@ document.getElementById('btn-add-member').addEventListener('click', function () 
     const row = document.createElement('div');
     row.className = 'member-row d-flex align-items-center gap-2 mb-2';
     row.innerHTML = `
-        <input type="file" name="members[${memberIndex}][foto_member]" class="form-control" accept="image/*" required style="flex: 1 1 50%;">
+        <input type="file" name="members[${memberIndex}][foto_member]" class="form-control" accept="image/*" style="flex: 1 1 50%;">
         <input type="text" name="members[${memberIndex}][nama_member]" class="form-control" placeholder="Nama Member" required style="flex: 1 1 50%;">
         <button type="button" class="btn btn-outline-danger btn-remove-member flex-shrink-0">x</button>
     `;
@@ -95,4 +114,17 @@ document.getElementById('member-list').addEventListener('click', function (e) {
     }
 });
 </script>
+
+@if ($errors->any())
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: '{!! $errors->first() !!}',
+                confirmButtonColor: '#212529',
+            });
+        });
+    </script>
+@endif
 @endpush

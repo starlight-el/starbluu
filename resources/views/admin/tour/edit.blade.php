@@ -4,6 +4,24 @@
 <h3 class="fw-bold mb-1">Ubah Data Tour & Jadwal</h3>
 <p class="text-muted mb-4">Data lama sudah terisi otomatis, ubah field yang diperlukan lalu simpan.</p>
 
+@php
+    $oldJadwals = old('jadwals');
+    if (!$oldJadwals) {
+        $oldJadwals = $tour->jadwals->map(function ($j) {
+            return [
+                'id' => $j->id,
+                'negara' => $j->negara,
+                'kota' => $j->kota,
+                'venue' => $j->venue,
+                'tanggal' => $j->tanggal,
+                'jam' => $j->jam ? substr($j->jam, 0, 5) : '',
+                'timezone' => $j->timezone,
+            ];
+        })->toArray();
+    }
+    $oldDeletedJadwals = old('deleted_jadwals', []);
+@endphp
+
 <form action="{{ route('admin.tours.update', $tour->id) }}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PUT')
@@ -50,37 +68,43 @@
 
     <label class="form-label fw-bold">Jadwal</label>
     <div id="jadwal-list">
-        @foreach ($tour->jadwals as $index => $jadwal)
+        @foreach ($oldJadwals as $index => $jadwal)
             <div class="jadwal-row border rounded p-3 mb-2">
-                <input type="hidden" name="jadwals[{{ $index }}][id]" value="{{ $jadwal->id }}">
+                @if (!empty($jadwal['id']))
+                    <input type="hidden" name="jadwals[{{ $index }}][id]" value="{{ $jadwal['id'] }}">
+                @endif
                 <div class="row g-2">
                     <div class="col-md-3">
-                        <input type="text" name="jadwals[{{ $index }}][negara]" class="form-control" value="{{ $jadwal->negara }}" placeholder="Negara" required>
+                        <input type="text" name="jadwals[{{ $index }}][negara]" class="form-control" value="{{ $jadwal['negara'] ?? '' }}" placeholder="Negara" required>
                     </div>
                     <div class="col-md-3">
-                        <input type="text" name="jadwals[{{ $index }}][kota]" class="form-control" value="{{ $jadwal->kota }}" placeholder="Kota" required>
+                        <input type="text" name="jadwals[{{ $index }}][kota]" class="form-control" value="{{ $jadwal['kota'] ?? '' }}" placeholder="Kota" required>
                     </div>
                     <div class="col-md-3">
-                        <input type="text" name="jadwals[{{ $index }}][venue]" class="form-control" value="{{ $jadwal->venue }}" placeholder="Venue" required>
+                        <input type="text" name="jadwals[{{ $index }}][venue]" class="form-control" value="{{ $jadwal['venue'] ?? '' }}" placeholder="Venue" required>
                     </div>
                     <div class="col-md-3">
-                        <input type="date" name="jadwals[{{ $index }}][tanggal]" class="form-control" value="{{ $jadwal->tanggal }}" required>
+                        <input type="date" name="jadwals[{{ $index }}][tanggal]" class="form-control" value="{{ $jadwal['tanggal'] ?? '' }}" required>
                     </div>
                     <div class="col-md-3">
-                        <input type="time" name="jadwals[{{ $index }}][jam]" class="form-control" value="{{ $jadwal->jam ? substr($jadwal->jam, 0, 5) : '' }}" placeholder="Jam">
+                        <input type="time" name="jadwals[{{ $index }}][jam]" class="form-control" value="{{ $jadwal['jam'] ?? '' }}" placeholder="Jam">
                     </div>
                     <div class="col-md-3">
-                        <input type="text" name="jadwals[{{ $index }}][timezone]" class="form-control" value="{{ $jadwal->timezone }}" placeholder="Timezone (mis. KST)">
+                        <input type="text" name="jadwals[{{ $index }}][timezone]" class="form-control" value="{{ $jadwal['timezone'] ?? '' }}" placeholder="Timezone (mis. KST)">
                     </div>
                     <div class="col-md-3 d-flex align-items-center">
-                        <button type="button" class="btn btn-outline-danger btn-remove-jadwal" data-jadwal-id="{{ $jadwal->id }}">x</button>
+                        <button type="button" class="btn btn-outline-danger btn-remove-jadwal" data-jadwal-id="{{ $jadwal['id'] ?? '' }}">x</button>
                     </div>
                 </div>
             </div>
         @endforeach
     </div>
 
-    <div id="deleted-jadwals-container"></div>
+    <div id="deleted-jadwals-container">
+        @foreach ($oldDeletedJadwals as $deletedId)
+            <input type="hidden" name="deleted_jadwals[]" value="{{ $deletedId }}">
+        @endforeach
+    </div>
 
     <button type="button" id="btn-add-jadwal" class="btn btn-outline-dark btn-sm mb-4">+ TAMBAH JADWAL</button>
 
@@ -93,7 +117,7 @@
 
 @push('scripts')
 <script>
-let jadwalIndex = {{ $tour->jadwals->count() }};
+let jadwalIndex = {{ count($oldJadwals) }};
 
 document.getElementById('btn-add-jadwal').addEventListener('click', function () {
     const container = document.getElementById('jadwal-list');
@@ -153,4 +177,17 @@ document.getElementById('jadwal-list').addEventListener('click', function (e) {
     }
 });
 </script>
+
+@if ($errors->any())
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: '{!! $errors->first() !!}',
+                confirmButtonColor: '#212529',
+            });
+        });
+    </script>
+@endif
 @endpush

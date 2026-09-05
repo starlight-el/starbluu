@@ -4,6 +4,13 @@
 <h3 class="fw-bold mb-1">Tambah Data Tour & Jadwal</h3>
 <p class="text-muted mb-4">Isi seluruh data baru dari awal, semua kolom masih kosong.</p>
 
+@php
+    $oldJadwals = old('jadwals');
+    if (!$oldJadwals) {
+        $oldJadwals = [['negara' => '', 'kota' => '', 'venue' => '', 'tanggal' => '', 'jam' => '', 'timezone' => '']];
+    }
+@endphp
+
 <form action="{{ route('admin.tours.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
 
@@ -43,31 +50,33 @@
 
     <label class="form-label fw-bold">Jadwal</label>
     <div id="jadwal-list">
-        <div class="jadwal-row border rounded p-3 mb-2">
-            <div class="row g-2">
-                <div class="col-md-3">
-                    <input type="text" name="jadwals[0][negara]" class="form-control" placeholder="Negara" required>
-                </div>
-                <div class="col-md-3">
-                    <input type="text" name="jadwals[0][kota]" class="form-control" placeholder="Kota" required>
-                </div>
-                <div class="col-md-3">
-                    <input type="text" name="jadwals[0][venue]" class="form-control" placeholder="Venue" required>
-                </div>
-                <div class="col-md-3">
-                    <input type="date" name="jadwals[0][tanggal]" class="form-control" required>
-                </div>
-                <div class="col-md-3">
-                    <input type="time" name="jadwals[0][jam]" class="form-control" placeholder="Jam">
-                </div>
-                <div class="col-md-3">
-                    <input type="text" name="jadwals[0][timezone]" class="form-control" placeholder="Timezone (mis. KST)">
-                </div>
-                <div class="col-md-3 d-flex align-items-center">
-                    <button type="button" class="btn btn-outline-danger btn-remove-jadwal">x</button>
+        @foreach ($oldJadwals as $index => $jadwal)
+            <div class="jadwal-row border rounded p-3 mb-2">
+                <div class="row g-2">
+                    <div class="col-md-3">
+                        <input type="text" name="jadwals[{{ $index }}][negara]" class="form-control" value="{{ $jadwal['negara'] ?? '' }}" placeholder="Negara" required>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" name="jadwals[{{ $index }}][kota]" class="form-control" value="{{ $jadwal['kota'] ?? '' }}" placeholder="Kota" required>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" name="jadwals[{{ $index }}][venue]" class="form-control" value="{{ $jadwal['venue'] ?? '' }}" placeholder="Venue" required>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="date" name="jadwals[{{ $index }}][tanggal]" class="form-control" value="{{ $jadwal['tanggal'] ?? '' }}" required>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="time" name="jadwals[{{ $index }}][jam]" class="form-control" value="{{ $jadwal['jam'] ?? '' }}" placeholder="Jam">
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" name="jadwals[{{ $index }}][timezone]" class="form-control" value="{{ $jadwal['timezone'] ?? '' }}" placeholder="Timezone (mis. KST)">
+                    </div>
+                    <div class="col-md-3 d-flex align-items-center">
+                        <button type="button" class="btn btn-outline-danger btn-remove-jadwal">x</button>
+                    </div>
                 </div>
             </div>
-        </div>
+        @endforeach
     </div>
 
     <button type="button" id="btn-add-jadwal" class="btn btn-outline-dark btn-sm mb-4">+ TAMBAH JADWAL</button>
@@ -81,7 +90,7 @@
 
 @push('scripts')
 <script>
-let jadwalIndex = 1;
+let jadwalIndex = {{ count($oldJadwals) }};
 
 document.getElementById('btn-add-jadwal').addEventListener('click', function () {
     const container = document.getElementById('jadwal-list');
@@ -130,4 +139,17 @@ document.getElementById('jadwal-list').addEventListener('click', function (e) {
     }
 });
 </script>
+
+@if ($errors->any())
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: '{!! $errors->first() !!}',
+                confirmButtonColor: '#212529',
+            });
+        });
+    </script>
+@endif
 @endpush
