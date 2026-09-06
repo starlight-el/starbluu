@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\ArtistController as AdminArtistController;
 use App\Http\Controllers\Admin\TourController as AdminTourController;
 use App\Http\Controllers\Admin\TicketTierController as AdminTicketTierController;
+use App\Http\Controllers\Admin\CheckInController as AdminCheckInController;
 
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 
@@ -53,5 +54,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/ticket-tiers/{jadwal}/edit', [AdminTicketTierController::class, 'edit'])->name('tickettiers.edit');
         Route::put('/ticket-tiers/{jadwal}', [AdminTicketTierController::class, 'update'])->name('tickettiers.update');
         Route::delete('/ticket-tiers/{jadwal}', [AdminTicketTierController::class, 'destroy'])->name('tickettiers.destroy');
+        Route::get('/checkin', [AdminCheckInController::class, 'index'])->name('checkin.index');
+        Route::post('/checkin', [AdminCheckInController::class, 'store'])->name('checkin.store');
     });
 });

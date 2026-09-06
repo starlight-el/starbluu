@@ -48,7 +48,7 @@
                     <a href="{{ route('admin.tickettiers.index') }}" class="nav-link px-0 text-dark {{ request()->routeIs('admin.tickettiers.*') ? 'fw-bold' : '' }}">Ticket Tier</a>
                 </li>
                 <li class="nav-item mb-2">
-                    <a href="#" class="nav-link px-0 text-muted">Validasi Check-In</a>
+                    <a href="{{ route('admin.checkin.index') }}" class="nav-link px-0 text-dark {{ request()->routeIs('admin.checkin.*') ? 'fw-bold' : '' }}">Validasi Check-In</a>
                 </li>
             </ul>
         </div>

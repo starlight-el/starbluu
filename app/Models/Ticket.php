@@ -12,6 +12,11 @@ class Ticket extends Model
     protected $fillable = [
         'order_id',
         'kode_eticket',
+        'checked_in_at',
+    ];
+
+    protected $casts = [
+        'checked_in_at' => 'datetime',
     ];
 
     public function order()
