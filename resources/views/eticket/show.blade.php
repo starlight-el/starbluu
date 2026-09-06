@@ -92,7 +92,7 @@
 
 <script>
 function salinKode(kode, btn) {
-    navigator.clipboard.writeText(kode).then(function () {
+    function tampilkanCentang() {
         const svg = btn.querySelector('svg');
         const originalHtml = svg.innerHTML;
 
@@ -101,7 +101,29 @@ function salinKode(kode, btn) {
         setTimeout(function () {
             svg.innerHTML = originalHtml;
         }, 1500);
-    });
+    }
+
+    if (window.isSecureContext && navigator.clipboard) {
+        navigator.clipboard.writeText(kode).then(tampilkanCentang);
+        return;
+    }
+
+    const textarea = document.createElement('textarea');
+    textarea.value = kode;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+
+    try {
+        document.execCommand('copy');
+        tampilkanCentang();
+    } catch (err) {
+        alert('Gagal menyalin kode. Silakan salin manual: ' + kode);
+    }
+
+    document.body.removeChild(textarea);
 }
 </script>
 @endpush
