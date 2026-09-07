@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\ArtistController as AdminArtistController;
 use App\Http\Controllers\Admin\TourController as AdminTourController;
 use App\Http\Controllers\Admin\TicketTierController as AdminTicketTierController;
 use App\Http\Controllers\Admin\CheckInController as AdminCheckInController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 
@@ -42,9 +43,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
 
     Route::middleware('admin')->group(function () {
-        Route::get('/dashboard', function () {
-            return view('admin.dashboard');
-        })->name('dashboard');
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
         Route::resource('artists', AdminArtistController::class)->except(['show']);
         Route::resource('tours', AdminTourController::class)->except(['show']);
