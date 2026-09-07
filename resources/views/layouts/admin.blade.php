@@ -23,6 +23,9 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
                 <li>
+                    <a href="{{ route('admin.profile.edit') }}" class="dropdown-item">Profile</a>
+                </li>
+                <li>
                     <form method="POST" action="{{ route('admin.logout') }}">
                         @csrf
                         <button type="submit" class="dropdown-item">Logout</button>

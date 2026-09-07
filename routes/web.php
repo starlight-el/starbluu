@@ -10,12 +10,14 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\EticketController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\ArtistController as AdminArtistController;
 use App\Http\Controllers\Admin\TourController as AdminTourController;
 use App\Http\Controllers\Admin\TicketTierController as AdminTicketTierController;
 use App\Http\Controllers\Admin\CheckInController as AdminCheckInController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
 
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 
@@ -37,6 +39,11 @@ Route::post('/checkout/{checkoutGroupId}/payment', [PaymentController::class, 'p
 Route::get('/tickets', [TicketController::class, 'index'])->name('tickets.index');
 Route::get('/tickets/{orderId}/eticket', [EticketController::class, 'show'])->name('eticket.show');
 
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+});
+
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AdminAuthController::class, 'login'])->name('login.submit');
@@ -44,6 +51,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::middleware('admin')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+        Route::get('/profile', [AdminProfileController::class, 'edit'])->name('profile.edit');
+        Route::put('/profile', [AdminProfileController::class, 'update'])->name('profile.update');
 
         Route::resource('artists', AdminArtistController::class)->except(['show']);
         Route::resource('tours', AdminTourController::class)->except(['show']);
