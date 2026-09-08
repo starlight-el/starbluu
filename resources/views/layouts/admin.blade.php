@@ -53,6 +53,9 @@
                 <li class="nav-item mb-2">
                     <a href="{{ route('admin.checkin.index') }}" class="nav-link px-0 text-dark {{ request()->routeIs('admin.checkin.*') ? 'fw-bold' : '' }}">Validasi Check-In</a>
                 </li>
+                <li class="nav-item mb-2">
+                    <a href="{{ route('admin.admins.index') }}" class="nav-link px-0 text-dark {{ request()->routeIs('admin.admins.*') ? 'fw-bold' : '' }}">Admin</a>
+                </li>
             </ul>
         </div>
 

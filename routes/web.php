@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\TicketTierController as AdminTicketTierController
 use App\Http\Controllers\Admin\CheckInController as AdminCheckInController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
+use App\Http\Controllers\Admin\AdminController;
 
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 
@@ -57,6 +58,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::resource('artists', AdminArtistController::class)->except(['show']);
         Route::resource('tours', AdminTourController::class)->except(['show']);
+        Route::resource('admins', AdminController::class);
         Route::get('/ticket-tiers', [AdminTicketTierController::class, 'index'])->name('tickettiers.index');
         Route::get('/ticket-tiers/create', [AdminTicketTierController::class, 'create'])->name('tickettiers.create');
         Route::post('/ticket-tiers', [AdminTicketTierController::class, 'store'])->name('tickettiers.store');
