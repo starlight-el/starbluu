@@ -1,8 +1,12 @@
 // Fonts
 @import url('https://fonts.bunny.net/css?family=Nunito');
+@import url('https://fonts.bunny.net/css?family=Unbounded|Plus+Jakarta+Sans:wght@400;500;600;700');
 
 // Variables
 @import 'variables';
 
 // Bootstrap
 @import 'bootstrap/scss/bootstrap';
+
+// Starbluu Custom Theme (Customer-facing pages)
+@import 'starbluu-theme';

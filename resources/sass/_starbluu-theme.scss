@@ -1,0 +1,219 @@
+.starbluu-theme {
+    background-color: $space-bg;
+    color: $space-text;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    min-height: 100vh;
+    background-image:
+        radial-gradient(ellipse 700px 500px at 15% 10%, rgba(111, 184, 239, 0.22), transparent 60%),
+        radial-gradient(ellipse 600px 600px at 85% 40%, rgba(111, 184, 239, 0.16), transparent 65%),
+        radial-gradient(ellipse 500px 400px at 30% 90%, rgba(111, 184, 239, 0.12), transparent 60%),
+        radial-gradient(1.5px 1.5px at 40px 60px, rgba(245, 248, 255, 0.9), transparent),
+        radial-gradient(1.5px 1.5px at 160px 30px, rgba(245, 248, 255, 0.7), transparent),
+        radial-gradient(2px 2px at 90px 140px, $space-accent-gold, transparent),
+        radial-gradient(1.5px 1.5px at 220px 100px, rgba(245, 248, 255, 0.6), transparent),
+        radial-gradient(2px 2px at 260px 200px, $space-accent-gold, transparent),
+        radial-gradient(1.5px 1.5px at 10px 190px, rgba(245, 248, 255, 0.8), transparent);
+    background-repeat: no-repeat, no-repeat, no-repeat, repeat, repeat, repeat, repeat, repeat, repeat;
+    background-size: 100% 100%, 100% 100%, 100% 100%, 300px 300px, 300px 300px, 300px 300px, 300px 300px, 300px 300px, 300px 300px;
+
+    .navbar {
+        position: relative;
+        z-index: 1050;
+        background-color: rgba($space-surface, 0.85) !important;
+        backdrop-filter: blur(6px);
+
+        .navbar-brand,
+        .nav-link {
+            color: $space-text !important;
+        }
+
+        .nav-link:hover {
+            color: $space-accent-blue !important;
+        }
+
+        .dropdown-menu {
+            z-index: 1060;
+            background-color: $space-surface;
+            border: 1px solid rgba($space-accent-blue, 0.25);
+        }
+
+        .dropdown-item {
+            color: $space-text;
+
+            &:hover {
+                background-color: rgba($space-accent-blue, 0.15);
+                color: $space-text;
+            }
+        }
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Unbounded', sans-serif;
+    }
+
+    a {
+        color: $space-accent-blue;
+    }
+
+    .banner-slide {
+        height: 380px;
+        border-radius: 16px;
+        background-size: cover;
+        background-position: center;
+        background-color: $space-surface;
+        display: flex;
+        align-items: flex-end;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(5, 7, 16, 0.85) 0%, rgba(5, 7, 16, 0.1) 60%, transparent 100%);
+        }
+
+        .carousel-caption {
+            position: relative;
+            z-index: 1;
+            text-align: left;
+            left: 0;
+            right: 0;
+            bottom: 20px;
+            padding: 0 24px;
+            max-width: 65%;
+
+            h4 {
+                font-family: 'Unbounded', sans-serif;
+                font-size: 1.5rem;
+                color: $space-text;
+                margin: 0;
+            }
+        }
+    }
+
+    .carousel-indicators {
+        left: auto;
+        right: 24px;
+        bottom: 16px;
+        margin: 0;
+
+        button {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            margin: 0 3px;
+            background-color: rgba($space-text, 0.4);
+            border: none;
+            opacity: 1;
+
+            &.active {
+                background-color: $space-accent-blue;
+            }
+        }
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background-color: rgba($space-bg, 0.6);
+        border: 1px solid rgba($space-accent-blue, 0.4);
+        background-size: 14px;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+    }
+
+    .carousel:hover .carousel-control-prev-icon,
+    .carousel:hover .carousel-control-next-icon {
+        opacity: 1;
+    }
+
+        .tour-card {
+        position: relative;
+        height: 340px;
+        border-radius: 16px;
+        overflow: hidden;
+        background-color: $space-surface;
+        background-size: cover;
+        background-position: center;
+        background-clip: padding-box;
+        display: flex;
+        align-items: flex-end;
+        transform: translateZ(0);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+        &:hover {
+            transform: translateY(-8px) translateZ(0);
+            box-shadow: 0 0 28px rgba($space-accent-blue, 0.35), 0 10px 24px rgba(0, 0, 0, 0.45);
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(5, 7, 16, 0.9) 0%, rgba(5, 7, 16, 0.15) 55%, transparent 100%);
+        }
+
+        .tour-card-body {
+            position: relative;
+            z-index: 1;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .tour-card-body h5 {
+            font-family: 'Unbounded', sans-serif;
+            font-size: 1.05rem;
+            color: $space-text;
+            margin-bottom: 6px;
+            min-height: 2.6rem;
+            line-height: 1.3rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .tour-card-body p {
+            color: rgba($space-text, 0.75);
+            font-size: 0.85rem;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .on-tour-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            z-index: 2;
+            border: 1px solid $space-accent-gold;
+            color: $space-accent-gold;
+            background-color: rgba(5, 7, 16, 0.6);
+            font-size: 0.7rem;
+            letter-spacing: 0.05em;
+            padding: 4px 10px;
+            border-radius: 999px;
+        }
+    }
+
+    .section-title {
+        font-family: 'Unbounded', sans-serif;
+        color: $space-text;
+        padding-top: 2.5rem;
+        margin-bottom: 1.5rem;
+
+        a {
+            color: $space-text;
+
+            &:hover {
+                color: $space-accent-blue;
+            }
+        }
+    }
+}

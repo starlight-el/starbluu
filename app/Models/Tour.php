@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Tour extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'artist_id',
         'nama_tour',
@@ -21,10 +22,18 @@ class Tour extends Model
     {
         return $this->belongsTo(Artist::class);
     }
-    
+
     public function jadwals()
     {
         return $this->hasMany(Jadwal::class);
     }
 
+    public function isOnTour(): bool
+    {
+        $today = Carbon::today();
+
+        return $this->jadwals->contains(function ($jadwal) use ($today) {
+            return Carbon::parse($jadwal->tanggal)->greaterThanOrEqualTo($today);
+        });
+    }
 }

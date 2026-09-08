@@ -9,7 +9,7 @@ class LandingController extends Controller
 {
     public function index()
     {
-        $tours = Tour::with('artist')->get();
+        $tours = Tour::with(['artist', 'jadwals'])->get();
 
         $tourList = $tours->where('kategori', 'tour');
         $worldTourList = $tours->where('kategori', 'world_tour');
