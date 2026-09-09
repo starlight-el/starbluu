@@ -1,48 +1,76 @@
 .starbluu-theme {
-    background-color: $space-bg;
-    color: $space-text;
+    background-color: $bluu-bg;
+    color: $bluu-text;
     font-family: 'Plus Jakarta Sans', sans-serif;
     min-height: 100vh;
-    background-image:
-        radial-gradient(ellipse 700px 500px at 15% 10%, rgba(111, 184, 239, 0.22), transparent 60%),
-        radial-gradient(ellipse 600px 600px at 85% 40%, rgba(111, 184, 239, 0.16), transparent 65%),
-        radial-gradient(ellipse 500px 400px at 30% 90%, rgba(111, 184, 239, 0.12), transparent 60%),
-        radial-gradient(1.5px 1.5px at 40px 60px, rgba(245, 248, 255, 0.9), transparent),
-        radial-gradient(1.5px 1.5px at 160px 30px, rgba(245, 248, 255, 0.7), transparent),
-        radial-gradient(2px 2px at 90px 140px, $space-accent-gold, transparent),
-        radial-gradient(1.5px 1.5px at 220px 100px, rgba(245, 248, 255, 0.6), transparent),
-        radial-gradient(2px 2px at 260px 200px, $space-accent-gold, transparent),
-        radial-gradient(1.5px 1.5px at 10px 190px, rgba(245, 248, 255, 0.8), transparent);
-    background-repeat: no-repeat, no-repeat, no-repeat, repeat, repeat, repeat, repeat, repeat, repeat;
-    background-size: 100% 100%, 100% 100%, 100% 100%, 300px 300px, 300px 300px, 300px 300px, 300px 300px, 300px 300px, 300px 300px;
 
     .navbar {
-        position: relative;
+        position: sticky;
+        top: 0;
         z-index: 1050;
-        background-color: rgba($space-surface, 0.85) !important;
-        backdrop-filter: blur(6px);
+        background-color: rgba($bluu-surface, 0.55) !important;
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 
-        .navbar-brand,
-        .nav-link {
-            color: $space-text !important;
+        > .container {
+            position: relative;
         }
 
-        .nav-link:hover {
-            color: $space-accent-blue !important;
+        .navbar-brand {
+            font-family: 'Unbounded', sans-serif;
+            font-size: 1.1rem;
+            color: $bluu-text !important;
+        }
+
+        .navbar-nav-center {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            flex-direction: row;
+        }
+
+        .nav-link {
+            position: relative;
+            color: $bluu-text !important;
+            margin: 0 4px;
+
+            &::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                bottom: 2px;
+                width: 100%;
+                height: 2px;
+                background-color: $bluu-accent;
+                transform: scaleX(0);
+                transform-origin: center;
+                transition: transform 0.25s ease;
+            }
+
+            &:hover::after,
+            &.active-nav::after {
+                transform: scaleX(1);
+            }
+
+            &:hover {
+                color: $bluu-accent !important;
+            }
         }
 
         .dropdown-menu {
             z-index: 1060;
-            background-color: $space-surface;
-            border: 1px solid rgba($space-accent-blue, 0.25);
+            background-color: $bluu-surface-2;
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .dropdown-item {
-            color: $space-text;
+            color: $bluu-text;
 
             &:hover {
-                background-color: rgba($space-accent-blue, 0.15);
-                color: $space-text;
+                background-color: rgba($bluu-accent, 0.15);
+                color: $bluu-text;
             }
         }
     }
@@ -52,15 +80,34 @@
     }
 
     a {
-        color: $space-accent-blue;
+        color: $bluu-accent;
+    }
+
+    .brand-accent {
+        color: $bluu-accent;
+    }
+
+    .user-avatar {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background-color: rgba($bluu-accent, 0.18);
+        border: 1px solid rgba($bluu-accent, 0.5);
+        color: $bluu-accent;
+        font-family: 'Unbounded', sans-serif;
+        font-size: 0.7rem;
+        font-weight: 700;
     }
 
     .banner-slide {
-        height: 380px;
+        height: 390px;
         border-radius: 16px;
         background-size: cover;
         background-position: center;
-        background-color: $space-surface;
+        background-color: $bluu-surface;
         display: flex;
         align-items: flex-end;
         position: relative;
@@ -71,7 +118,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top, rgba(5, 7, 16, 0.85) 0%, rgba(5, 7, 16, 0.1) 60%, transparent 100%);
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.1) 60%, transparent 100%);
         }
 
         .carousel-caption {
@@ -82,13 +129,16 @@
             right: 0;
             bottom: 20px;
             padding: 0 24px;
-            max-width: 65%;
+            max-width: 90%;
 
             h4 {
                 font-family: 'Unbounded', sans-serif;
-                font-size: 1.5rem;
-                color: $space-text;
+                font-size: 1.3rem;
+                color: $bluu-text;
                 margin: 0;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         }
     }
@@ -104,12 +154,12 @@
             height: 6px;
             border-radius: 50%;
             margin: 0 3px;
-            background-color: rgba($space-text, 0.4);
+            background-color: rgba($bluu-text, 0.35);
             border: none;
             opacity: 1;
 
             &.active {
-                background-color: $space-accent-blue;
+                background-color: $bluu-accent;
             }
         }
     }
@@ -119,8 +169,8 @@
         width: 32px;
         height: 32px;
         border-radius: 50%;
-        background-color: rgba($space-bg, 0.6);
-        border: 1px solid rgba($space-accent-blue, 0.4);
+        background-color: rgba($bluu-bg, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.2);
         background-size: 14px;
         opacity: 0;
         transition: opacity 0.2s ease;
@@ -131,30 +181,32 @@
         opacity: 1;
     }
 
-        .tour-card {
+    .tour-card {
         position: relative;
         height: 340px;
         border-radius: 16px;
         overflow: hidden;
-        background-color: $space-surface;
+        background-color: $bluu-surface;
         background-size: cover;
-        background-position: center;
+        background-position: center top;
         background-clip: padding-box;
         display: flex;
         align-items: flex-end;
+        border: 1px solid rgba(255, 255, 255, 0.06);
         transform: translateZ(0);
-        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 
         &:hover {
-            transform: translateY(-8px) translateZ(0);
-            box-shadow: 0 0 28px rgba($space-accent-blue, 0.35), 0 10px 24px rgba(0, 0, 0, 0.45);
+            transform: translateY(-6px) translateZ(0);
+            border-color: rgba($bluu-accent, 0.6);
+            box-shadow: 0 0 0 1px rgba($bluu-accent, 0.2), 0 16px 32px rgba(0, 0, 0, 0.6);
         }
 
         &::after {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top, rgba(5, 7, 16, 0.9) 0%, rgba(5, 7, 16, 0.15) 55%, transparent 100%);
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.1) 55%, transparent 100%);
         }
 
         .tour-card-body {
@@ -165,21 +217,26 @@
         }
 
         .tour-card-body h5 {
+            height: 2.6rem;
+            display: flex;
+            align-items: flex-end;
+            margin-bottom: 2px;
             font-family: 'Unbounded', sans-serif;
             font-size: 1.05rem;
-            color: $space-text;
-            margin-bottom: 6px;
-            min-height: 2.6rem;
-            line-height: 1.3rem;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            color: $bluu-text;
+
+            span {
+                display: -webkit-box;
+                line-height: 1.3rem;
+                -webkit-line-clamp: 2;
+                line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
         }
 
         .tour-card-body p {
-            color: rgba($space-text, 0.75);
+            color: $bluu-text-muted;
             font-size: 0.85rem;
             margin: 0;
             white-space: nowrap;
@@ -192,11 +249,13 @@
             top: 16px;
             right: 16px;
             z-index: 2;
-            border: 1px solid $space-accent-gold;
-            color: $space-accent-gold;
-            background-color: rgba(5, 7, 16, 0.6);
+            border: 1px solid rgba($bluu-accent, 0.7);
+            color: $bluu-accent;
+            background-color: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(8px);
             font-size: 0.7rem;
             letter-spacing: 0.05em;
+            font-weight: 600;
             padding: 4px 10px;
             border-radius: 999px;
         }
@@ -204,16 +263,95 @@
 
     .section-title {
         font-family: 'Unbounded', sans-serif;
-        color: $space-text;
+        color: $bluu-text;
         padding-top: 2.5rem;
         margin-bottom: 1.5rem;
 
         a {
-            color: $space-text;
+            color: $bluu-text;
 
             &:hover {
-                color: $space-accent-blue;
+                color: $bluu-accent;
             }
         }
+    }
+
+    main {
+        padding-bottom: 0 !important;
+    }
+
+    .site-footer {
+        margin-top: 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        background-color: rgba($bluu-surface, 0.4);
+
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 24px;
+            padding: 32px 0 24px;
+        }
+
+        .footer-brand h5 {
+            font-family: 'Unbounded', sans-serif;
+            font-size: 1.1rem;
+            color: $bluu-text;
+            margin-bottom: 4px;
+        }
+
+        .footer-brand p {
+            color: $bluu-text-muted;
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 12px;
+
+            a {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 38px;
+                height: 38px;
+                border-radius: 50%;
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                color: $bluu-text-muted;
+                transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+
+                svg {
+                    width: 18px;
+                    height: 18px;
+                }
+
+                &:hover {
+                    color: $bluu-accent;
+                    border-color: rgba($bluu-accent, 0.6);
+                    transform: translateY(-2px);
+                }
+            }
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 16px 0;
+            text-align: center;
+
+            p {
+                color: $bluu-text-muted;
+                font-size: 0.8rem;
+                margin: 0;
+            }
+        }
+    }
+}
+
+@media (max-width: 767.98px) {
+    .starbluu-theme .navbar-nav-center {
+        position: static;
+        transform: none;
     }
 }

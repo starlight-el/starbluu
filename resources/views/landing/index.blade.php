@@ -50,7 +50,7 @@
                             <span class="on-tour-badge">ON TOUR</span>
                         @endif
                         <div class="tour-card-body">
-                            <h5>{{ $tour->artist->nama_grup }}</h5>
+                            <h5><span>{{ $tour->artist->nama_grup }}</span></h5>
                             <p>{{ $tour->nama_tour }}</p>
                         </div>
                     </div>
@@ -70,7 +70,7 @@
                             <span class="on-tour-badge">ON TOUR</span>
                         @endif
                         <div class="tour-card-body">
-                            <h5>{{ $tour->artist->nama_grup }}</h5>
+                            <h5><span>{{ $tour->artist->nama_grup }}</span></h5>
                             <p>{{ $tour->nama_tour }}</p>
                         </div>
                     </div>
