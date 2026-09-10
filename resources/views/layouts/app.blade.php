@@ -23,31 +23,9 @@
                 <a class="navbar-brand" href="{{ url('/') }}">
                     star<span class="brand-accent">bluu</span>
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto navbar-nav-center">
-                        <li class="nav-item">
-                            <a href="{{ route('landing') }}" class="nav-link {{ request()->routeIs('landing') ? 'active-nav' : '' }}">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('tour.index') }}" class="nav-link {{ request()->routeIs('tour.index') ? 'active-nav' : '' }}">Tour</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('tour.world') }}" class="nav-link {{ request()->routeIs('tour.world') ? 'active-nav' : '' }}">World Tour</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('tickets.index') }}" class="nav-link {{ request()->routeIs('tickets.index') ? 'active-nav' : '' }}">My Tickets</a>
-                        </li>
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
-
+                <div class="navbar-actions">
+                    <ul class="navbar-nav navbar-nav-visible mb-0">
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
@@ -64,7 +42,7 @@
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     <span class="user-avatar">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</span>
-                                    {{ Auth::user()->name }}
+                                    <span class="navbar-username">{{ Auth::user()->name }}</span>
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
@@ -84,6 +62,27 @@
                                 </div>
                             </li>
                         @endguest
+                    </ul>
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav navbar-nav-center">
+                        <li class="nav-item">
+                            <a href="{{ route('landing') }}" class="nav-link {{ request()->routeIs('landing') ? 'active-nav' : '' }}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('tour.index') }}" class="nav-link {{ request()->routeIs('tour.index') ? 'active-nav' : '' }}">Tour</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('tour.world') }}" class="nav-link {{ request()->routeIs('tour.world') ? 'active-nav' : '' }}">World Tour</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('tickets.index') }}" class="nav-link {{ request()->routeIs('tickets.index') ? 'active-nav' : '' }}">My Tickets</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -132,6 +131,44 @@
     @stack('scripts')
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.26.25/sweetalert2.all.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navbarToggler = document.querySelector('.navbar-toggler');
+            const navbarCollapseEl = document.getElementById('navbarSupportedContent');
+            const profileToggleEl = document.getElementById('navbarDropdown');
+
+            if (!navbarToggler || !navbarCollapseEl) return;
+
+            const bsCollapse = bootstrap.Collapse.getOrCreateInstance(navbarCollapseEl, { toggle: false });
+
+            function closeProfileDropdown() {
+                if (!profileToggleEl) return;
+                const bsDropdown = bootstrap.Dropdown.getInstance(profileToggleEl);
+                if (bsDropdown) bsDropdown.hide();
+            }
+
+            navbarToggler.addEventListener('click', closeProfileDropdown);
+
+            if (profileToggleEl) {
+                profileToggleEl.addEventListener('click', function () {
+                    if (navbarCollapseEl.classList.contains('show')) {
+                        bsCollapse.hide();
+                    }
+                });
+            }
+
+            document.addEventListener('click', function (event) {
+                const clickedInsideCollapse = navbarCollapseEl.contains(event.target);
+                const clickedToggler = navbarToggler.contains(event.target);
+                const clickedProfile = profileToggleEl && profileToggleEl.contains(event.target);
+
+                if (navbarCollapseEl.classList.contains('show') && !clickedInsideCollapse && !clickedToggler && !clickedProfile) {
+                    bsCollapse.hide();
+                }
+            });
+        });
+    </script>
 
     @if (session('error'))
         <script>

@@ -1,24 +1,30 @@
 @extends('layouts.app')
 
+@section('body-class', 'starbluu-theme')
+
 @section('content')
 <div class="container">
 
-    <h3><a href="{{ route('landing') }}" class="text-dark text-decoration-none">&lt; Tour</a></h3>
+    <h3 class="page-title"><a href="{{ route('landing') }}" class="text-decoration-none">&lt; Tour</a></h3>
 
-    <div class="row mt-3">
+    <div class="row mb-5">
         @forelse ($tours as $tour)
-            <div class="col-md-6 mb-3">
-                <a href="{{ route('artist.show', ['id' => $tour->artist->id, 'from' => 'tour']) }}" class="text-decoration-none text-dark">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5>{{ $tour->artist->nama_grup }}</h5>
-                            <p class="mb-0">{{ $tour->nama_tour }}</p>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <a href="{{ route('artist.show', ['id' => $tour->artist->id, 'from' => 'tour']) }}" class="text-decoration-none">
+                    <div class="tour-card"
+                        @if ($tour->artist->foto_thumbnail) style="background-image: url('{{ asset('storage/' . $tour->artist->foto_thumbnail) }}');" @endif>
+                        @if ($tour->isOnTour())
+                            <span class="on-tour-badge">ON TOUR</span>
+                        @endif
+                        <div class="tour-card-body">
+                            <h5><span>{{ $tour->artist->nama_grup }}</span></h5>
+                            <p>{{ $tour->nama_tour }}</p>
                         </div>
                     </div>
                 </a>
             </div>
         @empty
-            <p>Belum ada data tour.</p>
+            <p class="text-muted">Belum ada data tour.</p>
         @endforelse
     </div>
 
