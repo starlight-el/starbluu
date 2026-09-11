@@ -363,6 +363,222 @@
         }
     }
 
+    .back-link {
+        display: inline-block;
+        color: $bluu-text-muted;
+        font-size: 0.85rem;
+        text-decoration: none;
+        margin-bottom: 1.5rem;
+
+        &:hover {
+            color: $bluu-accent;
+        }
+    }
+
+    .artist-banner {
+        position: relative;
+        aspect-ratio: 3 / 4;
+        border-radius: 16px;
+        overflow: hidden;
+        background-color: $bluu-surface;
+        background-size: cover;
+        background-position: center;
+        background-clip: padding-box;
+        display: flex;
+        align-items: flex-end;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        transform: translateZ(0);
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.15) 55%, transparent 100%);
+        }
+
+        .artist-banner-caption {
+            position: relative;
+            z-index: 1;
+            padding: 28px;
+
+            h1 {
+                font-family: 'Unbounded', sans-serif;
+                font-size: 1.6rem;
+                color: $bluu-text;
+                margin: 0;
+                line-height: 1.3;
+            }
+        }
+    }
+
+    .artist-info-box {
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 24px;
+        background-color: rgba($bluu-surface, 0.4);
+        margin-bottom: 2rem;
+
+        h2 {
+            font-family: 'Unbounded', sans-serif;
+            font-size: 1.3rem;
+            color: $bluu-text;
+            margin-bottom: 12px;
+        }
+
+        p {
+            color: $bluu-text-muted;
+            margin: 0;
+            line-height: 1.6;
+        }
+    }
+
+    .tour-subtitle {
+        font-family: 'Unbounded', sans-serif;
+        color: $bluu-text;
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+    }
+
+    .tour-dates-title {
+        font-family: 'Unbounded', sans-serif;
+        color: $bluu-accent;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+    }
+
+    .member-list {
+        margin-top: 0.5rem;
+
+        .member-item {
+            text-align: center;
+            margin-bottom: 20px;
+
+            .member-avatar {
+                width: 72px;
+                height: 72px;
+                border-radius: 50%;
+                margin: 0 auto 8px;
+                background-size: cover;
+                background-position: center top;
+                background-color: rgba($bluu-accent, 0.18);
+                border: 2px solid $bluu-accent;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-family: 'Unbounded', sans-serif;
+                font-size: 1.3rem;
+                font-weight: 700;
+                color: $bluu-accent;
+            }
+
+            p {
+                color: $bluu-text;
+                font-size: 0.85rem;
+                margin: 0;
+            }
+        }
+    }
+
+    .jadwal-list {
+        border-top: 2px solid $bluu-accent;
+        padding: 0 12px;
+        margin: 0 -12px;
+    }
+
+    .jadwal-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 18px 12px;
+        margin: 0 -12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.04);
+        }
+
+        .jadwal-kota {
+            font-family: 'Unbounded', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            color: $bluu-accent;
+            min-width: 110px;
+        }
+
+        .jadwal-venue {
+            flex: 1;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.01em;
+            color: $bluu-text;
+        }
+
+        .jadwal-date {
+            color: $bluu-text-muted;
+            font-size: 0.85rem;
+            text-align: right;
+            min-width: 170px;
+        }
+    }
+
+    .btn-accent {
+        position: relative;
+        display: inline-block;
+        overflow: hidden;
+        background-color: transparent;
+        border: 1px solid rgba($bluu-accent, 0.7);
+        color: $bluu-accent;
+        font-weight: 700;
+        font-size: 0.8rem;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        padding: 10px 22px;
+        border-radius: 6px;
+        text-decoration: none;
+        z-index: 0;
+        transition: color 0.3s ease;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background-color: $bluu-accent;
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+
+        &:hover {
+            color: $bluu-bg;
+
+            &::before {
+                width: 100%;
+            }
+        }
+    }
+
+    .btn-soldout {
+        display: inline-block;
+        background-color: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: $bluu-text-muted;
+        font-weight: 600;
+        font-size: 0.8rem;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        padding: 10px 22px;
+        border-radius: 6px;
+    }
+
     .section-title {
         font-family: 'Unbounded', sans-serif;
         color: $bluu-text;
@@ -483,6 +699,48 @@
 
         .tour-card {
             height: 260px;
+        }
+
+        .artist-banner {
+            .artist-banner-caption h1 {
+                font-size: 1.2rem;
+            }
+        }
+
+        .member-list .member-item .member-avatar {
+            width: 60px;
+            height: 60px;
+            font-size: 1.1rem;
+        }
+
+        .jadwal-row {
+            flex-wrap: wrap;
+
+            .jadwal-kota {
+                min-width: 100%;
+                margin-bottom: 4px;
+            }
+
+            .jadwal-venue {
+                flex: 1 1 60%;
+            }
+
+            .jadwal-date {
+                flex: 1 1 100%;
+                text-align: left;
+                margin-top: 4px;
+            }
+
+            .jadwal-action {
+                margin-top: 8px;
+                width: 100%;
+
+                .btn-accent,
+                .btn-soldout {
+                    display: block;
+                    text-align: center;
+                }
+            }
         }
 
         .section-title {
