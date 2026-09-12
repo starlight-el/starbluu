@@ -1,62 +1,88 @@
 @extends('layouts.app')
 
+@section('body-class', 'starbluu-theme')
+
 @section('content')
 <div class="container">
 
-    <a href="{{ route('artist.show', ['id' => $jadwal->tour->artist->id, 'from' => request('from')]) }}">&lt; Kembali</a>
+    <a href="{{ route('artist.show', ['id' => $jadwal->tour->artist->id, 'from' => request('from')]) }}" class="back-link">&lt; Kembali</a>
 
-    <h3 class="mt-3">{{ $jadwal->tour->nama_tour }}</h3>
-    <p class="text-muted">
-        {{ $jadwal->kota }}, {{ $jadwal->venue }} —
-        {{ \Carbon\Carbon::parse($jadwal->tanggal)->format('Y.m.d') }}
-        @if ($jadwal->jam)
-            {{ \Carbon\Carbon::parse($jadwal->jam)->format('H:i') }} {{ $jadwal->timezone }}
-        @endif
-    </p>
+    <div class="tier-hero">
+        <div class="tier-banner"
+            @if ($jadwal->tour->foto_banner_detail) style="background-image: url('{{ asset('storage/' . $jadwal->tour->foto_banner_detail) }}');" @endif>
+            <div class="tier-banner-caption">
+                <h1>{{ $jadwal->tour->nama_tour }}</h1>
+            </div>
+        </div>
 
-    @if (session('error'))
-        <div class="alert alert-danger">{{ session('error') }}</div>
-    @endif
+        <div class="tier-info-box">
+            <div class="tier-info-row">
+                <span class="tier-info-label">Kota</span>
+                <span class="tier-info-value tier-info-accent">{{ $jadwal->kota }}</span>
+            </div>
+            <div class="tier-info-row">
+                <span class="tier-info-label">Venue</span>
+                <span class="tier-info-value">{{ $jadwal->venue }}</span>
+            </div>
+            <div class="tier-info-row">
+                <span class="tier-info-label">Tanggal</span>
+                <span class="tier-info-value">
+                    {{ \Carbon\Carbon::parse($jadwal->tanggal)->format('d M Y') }}
+                    @if ($jadwal->jam)
+                        &middot; {{ \Carbon\Carbon::parse($jadwal->jam)->format('H:i') }} {{ $jadwal->timezone }}
+                    @endif
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <h4 class="tour-dates-title mt-5">Pilih Tier &amp; Jumlah Tiket</h4>
 
     <form method="POST" action="{{ route('checkout.store') }}">
         @csrf
         <input type="hidden" name="jadwal_id" value="{{ $jadwal->id }}">
 
-        @foreach ($jadwal->ticketTiers as $tier)
-            <div class="card mb-3">
-                <div class="card-body d-flex justify-content-between align-items-center">
-                    <div>
-                        <h5 class="mb-1">{{ $tier->nama_tier }}</h5>
-                        <p class="mb-1">Rp {{ number_format($tier->harga, 0, ',', '.') }}</p>
-                        <p class="mb-0 text-muted">Kuota: {{ $tier->kuota }}</p>
+        <div class="tier-list">
+            @foreach ($jadwal->ticketTiers as $tier)
+                <div class="tier-card">
+
+                    <div class="tier-name">
+                        <h5>{{ $tier->nama_tier }}</h5>
                     </div>
 
-                    <div class="d-flex align-items-center">
-                        <button type="button" class="btn btn-outline-secondary btn-kurang" data-tier="{{ $tier->id }}">-</button>
-                        <input type="number" class="form-control text-center mx-2 input-jumlah px-1"
-                            style="width: 40px" id="jumlah-{{ $tier->id }}" name="tiers[{{ $tier->id }}]"
-                            data-harga="{{ $tier->harga }}"
-                            value="0" min="0" max="{{ $tier->kuota }}" readonly>
-                        <button type="button" class="btn btn-outline-secondary btn-tambah" data-tier="{{ $tier->id }}">+</button>
+                    <div class="tier-price">
+                        <p>Rp {{ number_format($tier->harga, 0, ',', '.') }}</p>
+                    </div>
+
+                    <div class="tier-quota">
+                        <p>Kuota: {{ $tier->kuota }}</p>
+                    </div>
+
+                    <div class="tier-action">
+                        <div class="tier-qty">
+                            <button type="button" class="qty-btn btn-kurang" data-tier="{{ $tier->id }}" aria-label="Kurangi jumlah"></button>
+                            <input type="number" class="qty-input input-jumlah" id="jumlah-{{ $tier->id }}"
+                                name="tiers[{{ $tier->id }}]" data-harga="{{ $tier->harga }}"
+                                value="0" min="0" max="{{ $tier->kuota }}" readonly>
+                            <button type="button" class="qty-btn btn-tambah" data-tier="{{ $tier->id }}" aria-label="Tambah jumlah"></button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        @endforeach
+            @endforeach
+        </div>
 
-        <p class="text-muted">*Maksimal 2 tiket per akun</p>
+        <p class="helper-text">*Maksimal 2 tiket per akun</p>
 
-        <hr>
-
-        <div class="d-flex justify-content-between align-items-center">
+        <div class="tier-total">
             <h5>Total</h5>
-            <h5 id="total-harga">Rp 0</h5>
+            <h5 id="total-harga" class="tier-total-amount">Rp 0</h5>
         </div>
 
         @guest
-            <a href="{{ route('login') }}" class="btn btn-dark w-100 mt-2">PROCEED TO CHECKOUT</a>
-            <p class="text-muted mt-2">*Kamu perlu login/register dulu sebelum checkout</p>
+            <a href="{{ route('login') }}" class="btn-accent-solid w-100">PROCEED TO CHECKOUT</a>
+            <p class="tier-info-accent mt-3" style="font-size: 0.85rem;">*Kamu perlu login/register dulu sebelum checkout</p>
         @else
-            <button type="submit" class="btn btn-dark w-100 mt-2" id="btn-checkout">PROCEED TO CHECKOUT</button>
+            <button type="submit" class="btn-accent-solid w-100" id="btn-checkout">PROCEED TO CHECKOUT</button>
         @endguest
 
     </form>
@@ -65,16 +91,6 @@
 @endsection
 
 @push('scripts')
-<style>
-    input[type=number]::-webkit-inner-spin-button,
-    input[type=number]::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-    input[type=number] {
-        -moz-appearance: textfield;
-    }
-</style>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const maxTiketPerAkun = 2;
@@ -107,12 +123,34 @@ document.addEventListener('DOMContentLoaded', function () {
             const jumlahSekarang = parseInt(input.value);
 
             if (hitungTotalTiket() >= maxTiketPerAkun) {
-                alert('Maksimal 2 tiket per akun.');
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Batas Maksimal',
+                    text: 'Maksimal 2 tiket per akun.',
+                    buttonsStyling: false,
+                    customClass: {
+                        popup: 'bluu-swal-popup',
+                        title: 'bluu-swal-title',
+                        htmlContainer: 'bluu-swal-text',
+                        confirmButton: 'bluu-swal-confirm',
+                    },
+                });
                 return;
             }
 
             if (jumlahSekarang >= kuotaMax) {
-                alert('Kuota tier ini sudah habis.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Kuota Habis',
+                    text: 'Kuota tier ini sudah habis.',
+                    buttonsStyling: false,
+                    customClass: {
+                        popup: 'bluu-swal-popup',
+                        title: 'bluu-swal-title',
+                        htmlContainer: 'bluu-swal-text',
+                        confirmButton: 'bluu-swal-confirm',
+                    },
+                });
                 return;
             }
 

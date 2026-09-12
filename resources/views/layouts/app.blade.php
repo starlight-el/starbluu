@@ -176,7 +176,13 @@
                 icon: 'error',
                 title: 'Gagal',
                 text: '{!! session('error') !!}',
-                confirmButtonColor: '#212529',
+                buttonsStyling: false,
+                customClass: {
+                    popup: 'bluu-swal-popup',
+                    title: 'bluu-swal-title',
+                    htmlContainer: 'bluu-swal-text',
+                    confirmButton: 'bluu-swal-confirm',
+                },
             });
         </script>
     @endif
@@ -190,6 +196,11 @@
                 timer: 3000,
                 showConfirmButton: false,
                 timerProgressBar: true,
+                customClass: {
+                    popup: 'bluu-swal-popup',
+                    title: 'bluu-swal-title',
+                    htmlContainer: 'bluu-swal-text',
+                },
             });
         </script>
     @endif
