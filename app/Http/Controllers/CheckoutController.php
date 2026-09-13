@@ -110,12 +110,18 @@ class CheckoutController extends Controller
             ->where('status', 'pending')
             ->get();
 
+        if ($orders->isEmpty()) {
+            return redirect()->route('tickets.index')->with('error', 'Pesanan tidak ditemukan.');
+        }
+
+        $jadwalId = $orders->first()->ticketTier->jadwal_id;
+
         foreach ($orders as $order) {
             $order->ticketTier()->increment('kuota', $order->jumlah_tiket);
             $order->update(['status' => 'cancelled']);
         }
 
-        return redirect()->route('tickets.index')->with('info', 'Pesanan berhasil dibatalkan.');
+        return redirect()->route('tickettier.show', ['jadwalId' => $jadwalId])->with('info', 'Pesanan berhasil dibatalkan.');
     }
 
     private function batalkanJikaKedaluwarsa(\Illuminate\Support\Collection $orders)
