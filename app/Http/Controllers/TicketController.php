@@ -15,7 +15,7 @@ class TicketController extends Controller
 
     public function index()
     {
-        $orders = Order::with('ticketTier.jadwal.tour')
+        $orders = Order::with('ticketTier.jadwal.tour.artist')
             ->where('user_id', Auth::id())
             ->orderBy('created_at', 'desc')
             ->get();

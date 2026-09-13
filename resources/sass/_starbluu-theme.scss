@@ -953,6 +953,81 @@
         }
     }
 
+    .ticket-card-frame {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        height: 100%;
+        padding: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        background-color: rgba($bluu-surface, 0.35);
+
+        > .btn-accent-solid,
+        > .btn-disabled-outline {
+            margin-top: auto;
+        }
+    }
+
+    .ticket-tier-chip {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        text-align: left;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 8px;
+        padding: 8px 14px;
+        font-size: 0.8rem;
+        color: $bluu-text;
+        background-color: rgba(255, 255, 255, 0.04);
+    }
+
+    .ticket-badge {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        z-index: 2;
+        font-size: 0.7rem;
+        letter-spacing: 0.05em;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 999px;
+        backdrop-filter: blur(8px);
+        background-color: rgba(0, 0, 0, 0.65);
+        text-transform: uppercase;
+    }
+
+    .ticket-badge-paid {
+        color: #4ADE80;
+        border: 1px solid rgba(74, 222, 128, 0.7);
+    }
+
+    .ticket-badge-pending {
+        color: #FBBF24;
+        border: 1px solid rgba(251, 191, 36, 0.7);
+    }
+
+    .ticket-badge-inactive {
+        color: $bluu-text-muted;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-disabled-outline {
+        display: block;
+        width: 100%;
+        text-align: center;
+        background-color: transparent;
+        color: $bluu-text-muted;
+        font-weight: 700;
+        font-size: 0.85rem;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        padding: 14px 22px;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        cursor: not-allowed;
+    }
+
     .payment-total-label {
         color: $bluu-text-muted;
         font-size: 0.85rem;

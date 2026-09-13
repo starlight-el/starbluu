@@ -1,38 +1,54 @@
 @extends('layouts.app')
 
+@section('body-class', 'starbluu-theme')
+
 @section('content')
-<div class="container">
+<div class="container pb-5">
 
-    <h3 class="mb-4">My Tickets</h3>
+    <h3 class="page-title">My Tickets</h3>
 
-    @forelse ($orders as $order)
-        <div class="border rounded p-3 mb-3 bg-light">
-            <h5 class="mb-1">{{ $order->ticketTier->jadwal->tour->nama_tour }}</h5>
+    <div class="row mb-5">
+        @forelse ($orders as $order)
+            @php
+                $tour = $order->ticketTier->jadwal->tour;
+                $jadwal = $order->ticketTier->jadwal;
+            @endphp
+            <div class="col-md-4 col-sm-6 mb-5">
+                <div class="ticket-card-frame">
+                    <div class="tour-card"
+                        @if ($tour->artist->foto_thumbnail) style="background-image: url('{{ asset('storage/' . $tour->artist->foto_thumbnail) }}');" @endif>
 
-            <p class="text-muted mb-1">
-                {{ $order->ticketTier->jadwal->kota }}, {{ $order->ticketTier->jadwal->venue }} —
-                {{ \Carbon\Carbon::parse($order->ticketTier->jadwal->tanggal)->format('Y.m.d') }}
-            </p>
+                        @if ($order->status === 'paid')
+                            <span class="ticket-badge ticket-badge-paid">Lunas</span>
+                        @elseif ($order->status === 'pending')
+                            <span class="ticket-badge ticket-badge-pending">Menunggu Bayar</span>
+                        @elseif ($order->status === 'cancelled')
+                            <span class="ticket-badge ticket-badge-inactive">Dibatalkan</span>
+                        @elseif ($order->status === 'expired')
+                            <span class="ticket-badge ticket-badge-inactive">Expired</span>
+                        @endif
 
-            <p class="mb-3">{{ $order->ticketTier->nama_tier }} x {{ $order->jumlah_tiket }}</p>
+                        <div class="tour-card-body">
+                            <h5><span>{{ $tour->nama_tour }}</span></h5>
+                            <p>{{ $jadwal->kota }}, {{ $jadwal->venue }} &middot; {{ \Carbon\Carbon::parse($jadwal->tanggal)->format('d M Y') }}</p>
+                        </div>
+                    </div>
 
-            <div class="d-flex justify-content-between align-items-center">
-                @if ($order->status === 'paid')
-                    <span class="badge bg-success">LUNAS</span>
-                    <a href="{{ route('eticket.show', $order->id) }}" class="btn btn-dark btn-sm">LIHAT E-TICKET</a>
-                @elseif ($order->status === 'pending')
-                    <span class="badge bg-warning text-dark">MENUNGGU PEMBAYARAN</span>
-                    <a href="{{ route('payment.show', $order->checkout_group_id) }}" class="btn btn-dark btn-sm">LANJUT BAYAR</a>
-                @elseif ($order->status === 'cancelled')
-                    <span class="badge bg-secondary">DIBATALKAN</span>
-                @elseif ($order->status === 'expired')
-                    <span class="badge bg-secondary">EXPIRED</span>
-                @endif
+                    <span class="ticket-tier-chip">{{ $order->ticketTier->nama_tier }} x {{ $order->jumlah_tiket }}</span>
+
+                    @if ($order->status === 'paid')
+                        <a href="{{ route('eticket.show', $order->id) }}" class="btn-accent-solid">LIHAT E-TICKET</a>
+                    @elseif ($order->status === 'pending')
+                        <a href="{{ route('payment.show', $order->checkout_group_id) }}" class="btn-accent-solid">LANJUT BAYAR</a>
+                    @elseif ($order->status === 'cancelled' || $order->status === 'expired')
+                        <button type="button" class="btn-disabled-outline" disabled>LIHAT E-TICKET</button>
+                    @endif
+                </div>
             </div>
-        </div>
-    @empty
-        <p class="text-muted">Kamu belum punya pesanan tiket.</p>
-    @endforelse
+        @empty
+            <p class="helper-text">Kamu belum punya pesanan tiket.</p>
+        @endforelse
+    </div>
 
 </div>
 @endsection

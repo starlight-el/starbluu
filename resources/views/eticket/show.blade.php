@@ -1,9 +1,11 @@
 @extends('layouts.app')
 
+@section('body-class', 'starbluu-theme')
+
 @section('content')
 <div class="container pb-5">
 
-    <a href="{{ route('tickets.index') }}" class="d-inline-block mb-4 text-dark text-decoration-none fw-bold" style="font-family: 'Times New Roman', Times, serif;">&lt; Kembali ke My Tickets</a>
+    <a href="{{ route('tickets.index') }}" class="back-link d-inline-block mb-4">&lt; Kembali ke My Tickets</a>
 
     @php
         $jumlahTiket = $order->tickets->count();
