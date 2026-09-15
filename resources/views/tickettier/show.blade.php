@@ -3,7 +3,7 @@
 @section('body-class', 'starbluu-theme')
 
 @section('content')
-<div class="container">
+<div class="container pb-5">
 
     <a href="{{ route('artist.show', ['id' => $jadwal->tour->artist->id, 'from' => request('from')]) }}" class="back-link">&lt; Kembali</a>
 
