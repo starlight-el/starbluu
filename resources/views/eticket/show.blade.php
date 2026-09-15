@@ -12,7 +12,7 @@
     @endphp
 
     @foreach ($order->tickets as $index => $ticket)
-        <div class="mx-auto mb-5 bg-white" style="max-width: 550px; border: 1.5px dashed #888; border-radius: 45px; padding: 50px 40px; font-family: 'Times New Roman', Times, serif;">
+            <div class="mx-auto mb-5 bg-white" style="max-width: 550px; border: 1.5px dashed #888; border-radius: 45px; padding: 50px 40px; font-family: 'Times New Roman', Times, serif; color: #1a1a1a;">
 
             <div class="text-center mb-4">
                 <h4 class="fw-bold mb-0" style="letter-spacing: 0.5px;">E-TICKET</h4>
