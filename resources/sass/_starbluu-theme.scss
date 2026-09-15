@@ -831,6 +831,28 @@
         }
     }
 
+    .btn-neutral-outline {
+        display: block;
+        width: 100%;
+        text-align: center;
+        background-color: transparent;
+        color: $bluu-text-muted;
+        font-weight: 700;
+        font-size: 0.85rem;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        padding: 14px 22px;
+        border-radius: 8px;
+        text-decoration: none;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        transition: background-color 0.3s ease, color 0.3s ease;
+
+        &:hover {
+            background-color: $bluu-text-muted;
+            color: $bluu-bg;
+        }
+    }
+
     .btn-danger-outline {
         display: block;
         width: 100%;
@@ -1144,6 +1166,13 @@
         text-transform: uppercase;
         letter-spacing: 0.03em;
         margin-bottom: 6px;
+
+        .helper {
+            color: rgba(255, 255, 255, 0.8);
+            text-transform: none;
+            letter-spacing: normal;
+            font-size: 0.75rem;
+        }
     }
 
     .form-check-input {
@@ -1263,8 +1292,17 @@
     }
 
     .auth-plain-wrap {
+        width: 100%;
         max-width: 420px;
-        margin: 3rem auto;
+        height: 400px;
+        margin: 2.5rem auto;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 0 40px;
+        background-color: rgba($bluu-surface, 0.4);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 
     .alert-success {
