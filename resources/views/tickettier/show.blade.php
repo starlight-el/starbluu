@@ -80,7 +80,7 @@
 
         @guest
             <a href="{{ route('login') }}" class="btn-accent-solid w-100">PROCEED TO CHECKOUT</a>
-            <p class="tier-info-accent mt-3" style="font-size: 0.85rem;">*Kamu perlu login/register dulu sebelum checkout</p>
+            <p class="helper-text mt-4">*Kamu perlu login/register dulu sebelum checkout</p>
         @else
             <button type="submit" class="btn-accent-solid w-100" id="btn-checkout">PROCEED TO CHECKOUT</button>
         @endguest
