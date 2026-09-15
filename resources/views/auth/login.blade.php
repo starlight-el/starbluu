@@ -16,7 +16,7 @@
 
                     <div class="mb-3">
                         <label for="email" class="form-label" style="margin-bottom: 4px; font-size: 0.75rem;">{{ __('Email Address') }}</label>
-                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus style="padding: 6px 12px; font-size: 0.85rem; height: 36px;">
+                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" style="padding: 6px 12px; font-size: 0.85rem; height: 36px;">
 
                         @error('email')
                             <span class="invalid-feedback" role="alert" style="font-size: 0.7rem;">

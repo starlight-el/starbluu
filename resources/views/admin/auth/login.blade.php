@@ -22,7 +22,7 @@
                 @csrf
 
                 <div class="mb-3">
-                    <input type="email" name="email" class="form-control" placeholder="Email" value="{{ old('email') }}" required autofocus>
+                    <input type="email" name="email" class="form-control" placeholder="Email" value="{{ old('email') }}" required>
                 </div>
 
                 <div class="mb-3">
