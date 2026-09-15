@@ -60,7 +60,7 @@
 
     </form>
 
-    <p class="helper-text text-center mt-5 pt-5 mb-4">*Simulasi: status pembayaran langsung dikonfirmasi "Lunas" jika masih dalam batas waktu checkout.</p>
+    <p class="helper-text text-center mt-4 pt-5 mb-3">*Simulasi: status pembayaran langsung dikonfirmasi "Lunas" jika masih dalam batas waktu checkout.</p>
 
 </div>
 @endsection
