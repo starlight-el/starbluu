@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Tour;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
@@ -38,6 +39,16 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+    }
+
+    /**
+     * Show the application's registration form.
+     */
+    public function showRegistrationForm()
+    {
+        $tours = Tour::whereNotNull('foto_banner_detail')->get();
+
+        return view('auth.register', compact('tours'));
     }
 
     /**
