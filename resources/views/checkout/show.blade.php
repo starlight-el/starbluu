@@ -55,7 +55,7 @@
         <a href="{{ route('payment.show', $checkoutGroupId) }}" class="btn-accent-solid">LANJUT PEMBAYARAN</a>
     </div>
 
-    <p class="helper-text text-center mt-5 pt-5 mb-4">*Jika waktu habis dan belum dibayar, pesanan otomatis dibatalkan dan kuota tiket dikembalikan.</p>
+    <p class="helper-text text-center mt-4 pt-5 mb-3">*Jika waktu habis dan belum dibayar, pesanan otomatis dibatalkan dan kuota tiket dikembalikan.</p>
 
 </div>
 @endsection
