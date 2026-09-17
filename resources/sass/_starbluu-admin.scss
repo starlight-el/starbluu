@@ -392,4 +392,120 @@
             text-overflow: clip;
         }
     }
+
+    .admin-page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+    }
+
+    .admin-card {
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 8px 20px;
+        background-color: rgba($bluu-surface, 0.4);
+        overflow-x: auto;
+    }
+
+    .admin-table {
+        width: 100%;
+        --bs-table-bg: transparent;
+        --bs-table-color: #{$bluu-text};
+        --bs-table-border-color: rgba(255, 255, 255, 0.08);
+
+        th, td {
+            padding: 14px 10px;
+            vertical-align: middle;
+            background-color: transparent;
+        }
+
+        thead th {
+            color: $bluu-text-muted;
+            font-weight: 600;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            white-space: nowrap;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            transition: background-color 0.2s ease;
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.02);
+            }
+        }
+
+        tbody tr:last-child {
+            border-bottom: none !important;
+            
+            td {
+                border-bottom: none !important;
+            }
+        }
+    }
+
+    .admin-initial-avatar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, rgba($bluu-accent, 0.2), rgba($bluu-accent, 0.05));
+        border: 1px solid rgba($bluu-accent, 0.3);
+        color: $bluu-accent;
+        font-family: 'Unbounded', sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        flex-shrink: 0;
+    }
+
+    .admin-action-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 78px;
+        background-color: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 6px;
+        padding: 6px 12px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: $bluu-text-muted;
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        text-decoration: none;
+
+        &.btn-detail {
+            color: $bluu-text-muted;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        &.btn-detail:hover,
+        &.btn-detail:focus {
+            background-color: $bluu-text-muted;
+            color: $bluu-bg;
+        }
+
+        &.btn-edit {
+            color: #4ADE80;
+            border-color: #4ADE80;
+        }
+        &.btn-edit:hover,
+        &.btn-edit:focus {
+            background-color: #4ADE80;
+            color: $bluu-bg;
+        }
+        &.btn-delete {
+            color: #E5484D;
+            border-color: #E5484D;
+        }
+        &.btn-delete:hover,
+        &.btn-delete:focus {
+            background-color: #E5484D;
+            color: $bluu-bg;
+        }
+    }
 }
