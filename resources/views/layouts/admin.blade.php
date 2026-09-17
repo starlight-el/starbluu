@@ -12,13 +12,14 @@
 
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
-<body>
+<body class="starbluu-admin">
 
-    <nav class="navbar navbar-light bg-white border-bottom px-4">
-        <span class="navbar-brand fw-bold mb-0">starbluu</span>
+    <div class="admin-topbar">
+        <span class="admin-brand">star<span>bluu</span></span>
 
         <div class="dropdown">
-            <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
+            <a href="#" class="admin-user-toggle dropdown-toggle" data-bs-toggle="dropdown">
+                <span class="admin-user-avatar">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</span>
                 {{ Auth::user()->name }}
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
@@ -33,33 +34,33 @@
                 </li>
             </ul>
         </div>
-    </nav>
+    </div>
 
-    <div class="d-flex">
-        <div class="border-end bg-light" style="width: 220px; min-height: calc(100vh - 57px);">
-            <ul class="nav flex-column p-3">
-                <li class="nav-item mb-2">
-                    <a href="{{ route('admin.dashboard') }}" class="nav-link px-0 text-dark {{ request()->routeIs('admin.dashboard') ? 'fw-bold' : '' }}">Dashboard</a>
+    <div class="admin-body">
+        <div class="admin-sidebar">
+            <ul class="admin-nav">
+                <li class="admin-nav-item">
+                    <a href="{{ route('admin.dashboard') }}" class="admin-nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">Dashboard</a>
                 </li>
-                <li class="nav-item mb-2">
-                    <a href="{{ route('admin.tours.index') }}" class="nav-link px-0 text-dark {{ request()->routeIs('admin.tours.*') ? 'fw-bold' : '' }}">Tour & Jadwal</a>
+                <li class="admin-nav-item">
+                    <a href="{{ route('admin.tours.index') }}" class="admin-nav-link {{ request()->routeIs('admin.tours.*') ? 'active' : '' }}">Tour & Jadwal</a>
                 </li>
-                <li class="nav-item mb-2">
-                    <a href="{{ route('admin.artists.index') }}" class="nav-link px-0 text-dark {{ request()->routeIs('admin.artists.*') ? 'fw-bold' : '' }}">Artist</a>
+                <li class="admin-nav-item">
+                    <a href="{{ route('admin.artists.index') }}" class="admin-nav-link {{ request()->routeIs('admin.artists.*') ? 'active' : '' }}">Artist</a>
                 </li>
-                <li class="nav-item mb-2">
-                    <a href="{{ route('admin.tickettiers.index') }}" class="nav-link px-0 text-dark {{ request()->routeIs('admin.tickettiers.*') ? 'fw-bold' : '' }}">Ticket Tier</a>
+                <li class="admin-nav-item">
+                    <a href="{{ route('admin.tickettiers.index') }}" class="admin-nav-link {{ request()->routeIs('admin.tickettiers.*') ? 'active' : '' }}">Ticket Tier</a>
                 </li>
-                <li class="nav-item mb-2">
-                    <a href="{{ route('admin.checkin.index') }}" class="nav-link px-0 text-dark {{ request()->routeIs('admin.checkin.*') ? 'fw-bold' : '' }}">Validasi Check-In</a>
+                <li class="admin-nav-item">
+                    <a href="{{ route('admin.checkin.index') }}" class="admin-nav-link {{ request()->routeIs('admin.checkin.*') ? 'active' : '' }}">Validasi Check-In</a>
                 </li>
-                <li class="nav-item mb-2">
-                    <a href="{{ route('admin.admins.index') }}" class="nav-link px-0 text-dark {{ request()->routeIs('admin.admins.*') ? 'fw-bold' : '' }}">Admin</a>
+                <li class="admin-nav-item">
+                    <a href="{{ route('admin.admins.index') }}" class="admin-nav-link {{ request()->routeIs('admin.admins.*') ? 'active' : '' }}">Admin</a>
                 </li>
             </ul>
         </div>
 
-        <div class="flex-grow-1 p-4">
+        <div class="admin-content">
             @yield('content')
         </div>
     </div>
@@ -74,7 +75,13 @@
                 icon: 'error',
                 title: 'Gagal',
                 text: '{!! session('error') !!}',
-                confirmButtonColor: '#212529',
+                buttonsStyling: false,
+                customClass: {
+                    popup: 'bluu-swal-popup',
+                    title: 'bluu-swal-title',
+                    htmlContainer: 'bluu-swal-text',
+                    confirmButton: 'bluu-swal-confirm',
+                },
             });
         </script>
     @endif
@@ -88,6 +95,12 @@
                 timer: 3000,
                 showConfirmButton: false,
                 timerProgressBar: true,
+                buttonsStyling: false,
+                customClass: {
+                    popup: 'bluu-swal-popup',
+                    title: 'bluu-swal-title',
+                    htmlContainer: 'bluu-swal-text',
+                },
             });
         </script>
     @endif

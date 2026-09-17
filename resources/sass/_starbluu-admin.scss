@@ -1,0 +1,395 @@
+.starbluu-admin {
+    background-color: $bluu-bg;
+    color: $bluu-text;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    min-height: 100vh;
+
+    a {
+        color: $bluu-accent;
+        text-decoration: none;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Unbounded', sans-serif;
+        color: $bluu-text;
+    }
+
+    .text-muted {
+        color: $bluu-text-muted !important;
+    }
+
+    .admin-topbar {
+        position: sticky;
+        top: 0;
+        z-index: 1050;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 64px;
+        padding: 0 24px;
+        background-color: rgba($bluu-surface, 0.55);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .admin-brand {
+        font-family: 'Unbounded', sans-serif;
+        font-size: 1.05rem;
+        color: $bluu-text;
+
+        span {
+            color: $bluu-accent;
+        }
+    }
+
+    .admin-user-toggle {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: $bluu-text;
+        font-size: 0.9rem;
+
+        &:hover {
+            color: $bluu-accent;
+        }
+    }
+
+    .admin-user-avatar {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-color: rgba($bluu-accent, 0.18);
+        border: 1px solid rgba($bluu-accent, 0.5);
+        color: $bluu-accent;
+        font-family: 'Unbounded', sans-serif;
+        font-size: 0.75rem;
+        font-weight: 700;
+        flex-shrink: 0;
+    }
+
+    .dropdown-menu {
+        background-color: $bluu-surface-2;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .dropdown-item {
+        color: $bluu-text;
+
+        &:hover {
+            background-color: rgba($bluu-accent, 0.15);
+            color: $bluu-text;
+        }
+    }
+
+    .admin-body {
+        display: flex;
+    }
+
+    .admin-sidebar {
+        position: fixed;
+        top: 64px;
+        left: 0;
+        bottom: 0;
+        width: 220px;
+        flex-shrink: 0;
+        overflow-y: auto;
+        background-color: $bluu-surface;
+        border-right: 1px solid rgba(255, 255, 255, 0.06);
+        padding: 24px 16px;
+    }
+
+    .admin-nav {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .admin-nav-item {
+        margin-bottom: 4px;
+    }
+
+    .admin-nav-link {
+        display: block;
+        padding: 10px 14px;
+        border-radius: 8px;
+        color: $bluu-text-muted;
+        font-size: 0.9rem;
+        font-weight: 600;
+        transition: background-color 0.2s ease, color 0.2s ease;
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: $bluu-text;
+        }
+
+        &.active {
+            background-color: rgba($bluu-accent, 0.15);
+            color: $bluu-accent;
+        }
+    }
+
+    .admin-content {
+        flex: 1;
+        margin-left: 220px;
+        padding: 32px;
+    }
+
+    .btn-dark {
+        background-color: transparent;
+        border-color: $bluu-accent;
+        color: $bluu-accent;
+        font-weight: 700;
+        transition: background-color 0.3s ease, color 0.3s ease;
+
+        &:hover,
+        &:focus {
+            background-color: $bluu-accent;
+            border-color: $bluu-accent;
+            color: $bluu-bg;
+        }
+    }
+
+    .dash-page {
+        height: calc(100vh - 128px); // 64px topbar + 64px padding atas-bawah admin-content
+        display: flex;
+        flex-direction: column;
+    }
+
+    .dash-heading {
+        flex-shrink: 0;
+    }
+
+    .dash-stats {
+        flex-shrink: 0;
+    }
+
+    .dash-stat-card {
+        background-color: rgba($bluu-surface, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease;
+        position: relative;
+        overflow: hidden;
+
+        &:hover {
+            transform: translateY(-5px);
+            border-color: rgba($bluu-accent, 0.8);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba($bluu-accent, 0.15);
+            background-color: rgba($bluu-surface, 0.7);
+        }
+    }
+
+    .dash-row {
+        display: flex;
+        gap: 24px;
+        flex: 1;
+        min-height: 0;
+    }
+
+    .dash-chart-card,
+    .dash-table-card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        min-height: 0;
+        min-width: 0;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 20px;
+        background-color: rgba($bluu-surface, 0.4);
+    }
+
+    .dash-chart-card {
+        flex: 0 0 40%;
+    }
+
+    .dash-table-card {
+        flex: 1;
+    }
+
+    .dash-section-title {
+        font-family: 'Unbounded', sans-serif;
+        font-size: 0.95rem;
+        color: $bluu-text;
+        margin-bottom: 16px;
+    }
+
+    .dash-chart-container {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 12px;
+        padding-top: 20px;
+        padding-bottom: 8px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        background-image: repeating-linear-gradient(
+            to top,
+            transparent,
+            transparent calc(25% - 1px),
+            rgba(255, 255, 255, 0.04) calc(25% - 1px),
+            rgba(255, 255, 255, 0.04) 25%
+        );
+
+        &::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: rgba($bluu-surface, 0.3);
+            border-radius: 4px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: rgba($bluu-accent, 0.4);
+            border-radius: 4px;
+
+            &:hover {
+                background: rgba($bluu-accent, 0.7);
+            }
+        }
+    }
+
+    .dash-chart-column {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
+        height: 100%;
+        flex: 0 0 auto;
+        width: 76px;
+    }
+
+    .dash-bar-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
+        height: calc(100% - 30px);
+        width: 100%;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .dash-bar {
+        width: 100%;
+        max-width: 44px;
+        background: linear-gradient(to top, $bluu-accent, rgba($bluu-accent, 0.55));
+        border-radius: 6px 6px 0 0;
+        transition: height 0.5s ease, filter 0.3s ease, transform 0.3s ease;
+        cursor: pointer;
+        
+        &:hover {
+            filter: brightness(1.2) drop-shadow(0 0 10px rgba($bluu-accent, 0.7));
+            transform: scaleY(1.02);
+            transform-origin: bottom;
+        }
+    }
+    
+    .dash-chart-label {
+        margin-top: 10px;
+        font-size: 0.65rem;
+        color: $bluu-text-muted;
+        text-align: center;
+        line-height: 1.15;
+        width: 100%;
+    }
+
+    .dash-table-wrap {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        padding-right: 4px;
+
+        &::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: rgba($bluu-surface, 0.3);
+            border-radius: 4px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: rgba($bluu-accent, 0.4);
+            border-radius: 4px;
+            
+            &:hover {
+                background: rgba($bluu-accent, 0.7);
+            }
+        }
+    }
+
+    .dash-table {
+        table-layout: fixed;
+        width: 100%;
+        font-size: 0.85rem;
+        --bs-table-bg: transparent;
+        --bs-table-color: #{$bluu-text};
+        --bs-table-border-color: rgba(255, 255, 255, 0.08);
+
+        th, td {
+            padding: 14px 10px;
+            vertical-align: middle;
+            background-color: transparent;
+
+            &:last-child {
+                padding-right: 18px;
+            }
+        }
+
+        thead {
+            position: sticky;
+            top: 0;
+            background-color: rgba($bluu-surface, 0.95);
+            backdrop-filter: blur(8px);
+            z-index: 1;
+            
+            th {
+                color: $bluu-text-muted;
+                font-weight: 600;
+                font-size: 0.72rem;
+                text-transform: uppercase;
+                letter-spacing: 0.03em;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+                white-space: nowrap;
+            }
+        }
+
+        tbody tr {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            transition: background-color 0.2s ease;
+            
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.02);
+            }
+        }
+
+        tbody tr:last-child {
+            border-bottom: none !important;
+            
+            td {
+                border-bottom: none !important;
+            }
+        }
+    }
+
+    .dash-table-line {
+        display: block;
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        
+        &.price-col {
+            white-space: normal;
+            overflow: visible;
+            text-overflow: clip;
+        }
+    }
+}
