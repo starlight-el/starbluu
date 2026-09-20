@@ -16,7 +16,7 @@ class TourController extends Controller
     {
         $tours = Tour::with('artist')->withCount('jadwals')->get()
             ->sortBy(function ($tour) {
-                return $tour->kategori . '-' . $tour->artist->nama_grup;
+                return $tour->kategori . '-' . strtolower($tour->artist->nama_grup);
             })
             ->values();
 

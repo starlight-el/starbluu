@@ -1,118 +1,158 @@
 @extends('layouts.admin')
 
 @section('content')
-<h3 class="fw-bold mb-1">Ubah Data Tour & Jadwal</h3>
-<p class="text-muted mb-4">Data lama sudah terisi otomatis, ubah field yang diperlukan lalu simpan.</p>
+    <div class="admin-container">
 
-@php
-    $oldJadwals = old('jadwals');
-    if (!$oldJadwals) {
-        $oldJadwals = $tour->jadwals->map(function ($j) {
-            return [
-                'id' => $j->id,
-                'negara' => $j->negara,
-                'kota' => $j->kota,
-                'venue' => $j->venue,
-                'tanggal' => $j->tanggal,
-                'jam' => $j->jam ? substr($j->jam, 0, 5) : '',
-                'timezone' => $j->timezone,
-            ];
-        })->toArray();
-    }
-    $oldDeletedJadwals = old('deleted_jadwals', []);
-@endphp
+        <div class="admin-page-header">
+            <div>
+                <h3 class="fw-bold mb-1">Ubah Data Tour & Jadwal</h3>
+                <p class="text-muted mb-0" style="font-size: 0.85rem;">Data lama sudah terisi otomatis, ubah field yang diperlukan lalu simpan.</p>
+            </div>
+        </div>
 
-<form action="{{ route('admin.tours.update', $tour->id) }}" method="POST" enctype="multipart/form-data">
-    @csrf
-    @method('PUT')
+        @php
+            $oldJadwals = old('jadwals');
+            if (empty($oldJadwals)) {
+                $oldJadwals = $tour->jadwals->map(function ($j) {
+                    return [
+                        'id' => $j->id,
+                        'negara' => $j->negara,
+                        'kota' => $j->kota,
+                        'venue' => $j->venue,
+                        'tanggal' => $j->tanggal,
+                        'jam' => $j->jam ? substr($j->jam, 0, 5) : '',
+                        'timezone' => $j->timezone,
+                    ];
+                })->toArray();
+            }
 
-    <div class="mb-3">
-        <label class="form-label text-muted">Artist</label>
-        <select name="artist_id" class="form-select" required>
-            @foreach ($artists as $artist)
-                <option value="{{ $artist->id }}" {{ old('artist_id', $tour->artist_id) == $artist->id ? 'selected' : '' }}>{{ $artist->nama_grup }}</option>
-            @endforeach
-        </select>
-    </div>
+            $oldDeletedJadwals = old('deleted_jadwals');
+            if (empty($oldDeletedJadwals)) {
+                $oldDeletedJadwals = [];
+            }
+        @endphp
 
-    <div class="mb-3">
-        <label class="form-label text-muted">Nama Tour</label>
-        <input type="text" name="nama_tour" class="form-control" value="{{ old('nama_tour', $tour->nama_tour) }}" required>
-    </div>
+        <div class="admin-form-card mt-4">
+            <form action="{{ route('admin.tours.update', $tour->id) }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
 
-    <div class="mb-3">
-        <label class="form-label text-muted">Kategori</label>
-        <select name="kategori" class="form-select" required>
-            <option value="tour" {{ old('kategori', $tour->kategori) == 'tour' ? 'selected' : '' }}>Tour</option>
-            <option value="world_tour" {{ old('kategori', $tour->kategori) == 'world_tour' ? 'selected' : '' }}>World Tour</option>
-        </select>
-    </div>
+                <div class="artist-form-grid">
+                    <div>
+                        <div class="mb-4">
+                            <label class="form-label text-muted">Artist</label>
+                            <select name="artist_id" class="form-select @error('artist_id') is-invalid @enderror" required>
+                                @foreach ($artists as $artist)
+                                    <option value="{{ $artist->id }}" {{ old('artist_id', $tour->artist_id) == $artist->id ? 'selected' : '' }}>{{ $artist->nama_grup }}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
-    <div class="mb-3">
-        <label class="form-label text-muted">Foto Banner Home Saat Ini</label><br>
-        @if ($tour->foto_banner_home)
-            <img src="{{ Storage::url($tour->foto_banner_home) }}" alt="Banner Home" style="width: 200px; height: 100px; object-fit: cover; border-radius: 8px;" class="mb-2">
-        @endif
-        <label class="form-label text-muted d-block">Ganti Foto Banner Home (kosongkan jika tidak diubah)</label>
-        <input type="file" name="foto_banner_home" class="form-control" accept="image/*">
-    </div>
+                        <div class="mb-4">
+                            <label class="form-label text-muted">Nama Tour</label>
+                            <input type="text" name="nama_tour" class="form-control @error('nama_tour') is-invalid @enderror" value="{{ old('nama_tour', $tour->nama_tour) }}" required>
+                        </div>
 
-    <div class="mb-3">
-        <label class="form-label text-muted">Foto Banner Detail Artist Saat Ini</label><br>
-        @if ($tour->foto_banner_detail)
-            <img src="{{ Storage::url($tour->foto_banner_detail) }}" alt="Banner Detail" style="width: 200px; height: 100px; object-fit: cover; border-radius: 8px;" class="mb-2">
-        @endif
-        <label class="form-label text-muted d-block">Ganti Foto Banner Detail Artist (kosongkan jika tidak diubah)</label>
-        <input type="file" name="foto_banner_detail" class="form-control" accept="image/*">
-    </div>
-
-    <label class="form-label fw-bold">Jadwal</label>
-    <div id="jadwal-list">
-        @foreach ($oldJadwals as $index => $jadwal)
-            <div class="jadwal-row border rounded p-3 mb-2">
-                @if (!empty($jadwal['id']))
-                    <input type="hidden" name="jadwals[{{ $index }}][id]" value="{{ $jadwal['id'] }}">
-                @endif
-                <div class="row g-2">
-                    <div class="col-md-3">
-                        <input type="text" name="jadwals[{{ $index }}][negara]" class="form-control" value="{{ $jadwal['negara'] ?? '' }}" placeholder="Negara" required>
+                        <div>
+                            <label class="form-label text-muted">Kategori</label>
+                            <select name="kategori" class="form-select @error('kategori') is-invalid @enderror" required>
+                                <option value="tour" {{ old('kategori', $tour->kategori) == 'tour' ? 'selected' : '' }}>Tour</option>
+                                <option value="world_tour" {{ old('kategori', $tour->kategori) == 'world_tour' ? 'selected' : '' }}>World Tour</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        <input type="text" name="jadwals[{{ $index }}][kota]" class="form-control" value="{{ $jadwal['kota'] ?? '' }}" placeholder="Kota" required>
-                    </div>
-                    <div class="col-md-3">
-                        <input type="text" name="jadwals[{{ $index }}][venue]" class="form-control" value="{{ $jadwal['venue'] ?? '' }}" placeholder="Venue" required>
-                    </div>
-                    <div class="col-md-3">
-                        <input type="date" name="jadwals[{{ $index }}][tanggal]" class="form-control" value="{{ $jadwal['tanggal'] ?? '' }}" required>
-                    </div>
-                    <div class="col-md-3">
-                        <input type="time" name="jadwals[{{ $index }}][jam]" class="form-control" value="{{ $jadwal['jam'] ?? '' }}" placeholder="Jam">
-                    </div>
-                    <div class="col-md-3">
-                        <input type="text" name="jadwals[{{ $index }}][timezone]" class="form-control" value="{{ $jadwal['timezone'] ?? '' }}" placeholder="Timezone (mis. KST)">
-                    </div>
-                    <div class="col-md-3 d-flex align-items-center">
-                        <button type="button" class="btn btn-outline-danger btn-remove-jadwal" data-jadwal-id="{{ $jadwal['id'] ?? '' }}">x</button>
+
+                    <div class="d-flex flex-column h-100 justify-content-between">
+                        <div class="tour-photo-block">
+                            <div class="tour-photo-preview ratio-square">
+                                @if ($tour->foto_banner_home)
+                                    <img src="{{ Storage::url($tour->foto_banner_home) }}" alt="Banner Home">
+                                @endif
+                            </div>
+                            <div class="tour-photo-fields">
+                                <label class="form-label text-muted">Ganti Foto Banner Home</label>
+                                <div class="file-input-wrap @error('foto_banner_home') is-invalid @enderror">
+                                    <input type="file" id="banner-home-input-edit" name="foto_banner_home" class="file-input-hidden" accept="image/*">
+                                    <label for="banner-home-input-edit" class="file-input-button">Choose File</label>
+                                    <span class="file-input-filename">No file chosen</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tour-photo-block">
+                            <div class="tour-photo-preview ratio-portrait">
+                                @if ($tour->foto_banner_detail)
+                                    <img src="{{ Storage::url($tour->foto_banner_detail) }}" alt="Banner Detail">
+                                @endif
+                            </div>
+                            <div class="tour-photo-fields">
+                                <label class="form-label text-muted">Ganti Foto Banner Detail Artist</label>
+                                <div class="file-input-wrap @error('foto_banner_detail') is-invalid @enderror">
+                                    <input type="file" id="banner-detail-input-edit" name="foto_banner_detail" class="file-input-hidden" accept="image/*">
+                                    <label for="banner-detail-input-edit" class="file-input-button">Choose File</label>
+                                    <span class="file-input-filename">No file chosen</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        @endforeach
-    </div>
 
-    <div id="deleted-jadwals-container">
-        @foreach ($oldDeletedJadwals as $deletedId)
-            <input type="hidden" name="deleted_jadwals[]" value="{{ $deletedId }}">
-        @endforeach
-    </div>
+                <hr style="border-color: rgba(255,255,255,0.08); margin: 32px 0;">
 
-    <button type="button" id="btn-add-jadwal" class="btn btn-outline-dark btn-sm mb-4">+ TAMBAH JADWAL</button>
+                <h6 class="fw-bold text-white mb-3" style="font-size: 0.95rem;">Jadwal</h6>
+                <div id="jadwal-list">
+                    @foreach ($oldJadwals as $index => $jadwal)
+                        <div class="jadwal-card">
+                            @if (!empty($jadwal['id']))
+                                <input type="hidden" name="jadwals[{{ $index }}][id]" value="{{ $jadwal['id'] }}">
+                            @endif
+                            <button type="button" class="jadwal-remove-btn btn-remove-jadwal" data-jadwal-id="{{ $jadwal['id'] ?? '' }}" aria-label="Hapus jadwal"></button>
+                            <div class="jadwal-card-grid">
+                                <div>
+                                    <label class="form-label text-muted">Negara</label>
+                                    <input type="text" name="jadwals[{{ $index }}][negara]" class="form-control" value="{{ $jadwal['negara'] ?? '' }}" required>
+                                </div>
+                                <div>
+                                    <label class="form-label text-muted">Kota</label>
+                                    <input type="text" name="jadwals[{{ $index }}][kota]" class="form-control" value="{{ $jadwal['kota'] ?? '' }}" required>
+                                </div>
+                                <div>
+                                    <label class="form-label text-muted">Venue</label>
+                                    <input type="text" name="jadwals[{{ $index }}][venue]" class="form-control" value="{{ $jadwal['venue'] ?? '' }}" required>
+                                </div>
+                                <div>
+                                    <label class="form-label text-muted">Tanggal</label>
+                                    <input type="date" name="jadwals[{{ $index }}][tanggal]" class="form-control" value="{{ $jadwal['tanggal'] ?? '' }}" required>
+                                </div>
+                                <div>
+                                    <label class="form-label text-muted">Jam</label>
+                                    <input type="time" name="jadwals[{{ $index }}][jam]" class="form-control" value="{{ $jadwal['jam'] ?? '' }}">
+                                </div>
+                                <div>
+                                    <label class="form-label text-muted">Timezone</label>
+                                    <input type="text" name="jadwals[{{ $index }}][timezone]" class="form-control" value="{{ $jadwal['timezone'] ?? '' }}" placeholder="mis. KST">
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
 
-    <div>
-        <button type="submit" class="btn btn-dark">SIMPAN</button>
-        <a href="{{ route('admin.tours.index') }}" class="btn btn-outline-secondary">BATAL</a>
+                <div id="deleted-jadwals-container">
+                    @foreach ($oldDeletedJadwals as $deletedId)
+                        <input type="hidden" name="deleted_jadwals[]" value="{{ $deletedId }}">
+                    @endforeach
+                </div>
+
+                <button type="button" id="btn-add-jadwal" class="admin-btn-success mb-4" style="padding: 8px 20px; font-size: 0.75rem; margin-top: 4px;">+ Tambah Jadwal</button>
+
+                <div class="admin-form-actions pt-3" style="border-top: 1px solid rgba(255,255,255,0.08);">
+                    <button type="submit" class="admin-btn-solid">Simpan</button>
+                    <a href="{{ route('admin.tours.index') }}" class="admin-btn-outline">Batal</a>
+                </div>
+            </form>
+        </div>
+
     </div>
-</form>
 @endsection
 
 @push('scripts')
@@ -122,44 +162,59 @@ let jadwalIndex = {{ count($oldJadwals) }};
 document.getElementById('btn-add-jadwal').addEventListener('click', function () {
     const container = document.getElementById('jadwal-list');
 
-    const row = document.createElement('div');
-    row.className = 'jadwal-row border rounded p-3 mb-2';
-    row.innerHTML = `
-        <div class="row g-2">
-            <div class="col-md-3">
-                <input type="text" name="jadwals[${jadwalIndex}][negara]" class="form-control" placeholder="Negara" required>
+    const card = document.createElement('div');
+    card.className = 'jadwal-card';
+    card.innerHTML = `
+        <button type="button" class="jadwal-remove-btn btn-remove-jadwal" aria-label="Hapus jadwal"></button>
+        <div class="jadwal-card-grid">
+            <div>
+                <label class="form-label text-muted">Negara</label>
+                <input type="text" name="jadwals[${jadwalIndex}][negara]" class="form-control" required>
             </div>
-            <div class="col-md-3">
-                <input type="text" name="jadwals[${jadwalIndex}][kota]" class="form-control" placeholder="Kota" required>
+            <div>
+                <label class="form-label text-muted">Kota</label>
+                <input type="text" name="jadwals[${jadwalIndex}][kota]" class="form-control" required>
             </div>
-            <div class="col-md-3">
-                <input type="text" name="jadwals[${jadwalIndex}][venue]" class="form-control" placeholder="Venue" required>
+            <div>
+                <label class="form-label text-muted">Venue</label>
+                <input type="text" name="jadwals[${jadwalIndex}][venue]" class="form-control" required>
             </div>
-            <div class="col-md-3">
+            <div>
+                <label class="form-label text-muted">Tanggal</label>
                 <input type="date" name="jadwals[${jadwalIndex}][tanggal]" class="form-control" required>
             </div>
-            <div class="col-md-3">
-                <input type="time" name="jadwals[${jadwalIndex}][jam]" class="form-control" placeholder="Jam">
+            <div>
+                <label class="form-label text-muted">Jam</label>
+                <input type="time" name="jadwals[${jadwalIndex}][jam]" class="form-control">
             </div>
-            <div class="col-md-3">
-                <input type="text" name="jadwals[${jadwalIndex}][timezone]" class="form-control" placeholder="Timezone (mis. KST)">
-            </div>
-            <div class="col-md-3 d-flex align-items-center">
-                <button type="button" class="btn btn-outline-danger btn-remove-jadwal">x</button>
+            <div>
+                <label class="form-label text-muted">Timezone</label>
+                <input type="text" name="jadwals[${jadwalIndex}][timezone]" class="form-control" placeholder="mis. KST">
             </div>
         </div>
     `;
 
-    container.appendChild(row);
+    container.appendChild(card);
     jadwalIndex++;
 });
 
 document.getElementById('jadwal-list').addEventListener('click', function (e) {
     if (e.target.classList.contains('btn-remove-jadwal')) {
-        const rows = document.querySelectorAll('.jadwal-row');
+        const cards = document.querySelectorAll('.jadwal-card');
 
-        if (rows.length <= 1) {
-            alert('Minimal harus ada 1 jadwal.');
+        if (cards.length <= 1) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Tidak bisa dihapus',
+                text: 'Minimal harus ada 1 jadwal.',
+                buttonsStyling: false,
+                customClass: {
+                    popup: 'bluu-swal-popup',
+                    title: 'bluu-swal-title',
+                    htmlContainer: 'bluu-swal-text',
+                    confirmButton: 'bluu-swal-confirm',
+                },
+            });
             return;
         }
 
@@ -173,7 +228,15 @@ document.getElementById('jadwal-list').addEventListener('click', function (e) {
             document.getElementById('deleted-jadwals-container').appendChild(hiddenInput);
         }
 
-        e.target.closest('.jadwal-row').remove();
+        e.target.closest('.jadwal-card').remove();
+    }
+});
+
+document.addEventListener('change', function (e) {
+    if (e.target.classList.contains('file-input-hidden')) {
+        const wrap = e.target.closest('.file-input-wrap');
+        const label = wrap.querySelector('.file-input-filename');
+        label.textContent = e.target.files.length ? e.target.files[0].name : 'No file chosen';
     }
 });
 </script>
@@ -185,7 +248,13 @@ document.getElementById('jadwal-list').addEventListener('click', function (e) {
                 icon: 'error',
                 title: 'Gagal',
                 text: '{!! $errors->first() !!}',
-                confirmButtonColor: '#212529',
+                buttonsStyling: false,
+                customClass: {
+                    popup: 'bluu-swal-popup',
+                    title: 'bluu-swal-title',
+                    htmlContainer: 'bluu-swal-text',
+                    confirmButton: 'bluu-swal-confirm',
+                },
             });
         });
     </script>
