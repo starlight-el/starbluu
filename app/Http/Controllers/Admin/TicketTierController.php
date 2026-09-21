@@ -20,7 +20,11 @@ class TicketTierController extends Controller
 
     public function index()
     {
-        $jadwals = Jadwal::with('tour.artist')->withCount('ticketTiers')->orderBy('tanggal')->get();
+        $jadwals = Jadwal::with('tour.artist')->withCount('ticketTiers')->get()
+            ->sortBy(function ($jadwal) {
+                return strtolower($jadwal->tour->artist->nama_grup) . '-' . $jadwal->tanggal;
+            })
+            ->values();
 
         return view('admin.tickettier.index', compact('jadwals'));
     }

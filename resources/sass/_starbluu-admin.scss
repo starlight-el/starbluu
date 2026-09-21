@@ -513,6 +513,15 @@
             background-color: #E5484D;
             color: $bluu-bg;
         }
+        &.btn-add {
+            color: $bluu-accent;
+            border-color: $bluu-accent;
+        }
+        &.btn-add:hover,
+        &.btn-add:focus {
+            background-color: $bluu-accent;
+            color: $bluu-bg;
+        }
     }
 
     .form-control {
@@ -538,6 +547,12 @@
 
         &.is-invalid {
             border-color: #E5484D;
+        }
+
+        &:disabled {
+            background-color: rgba(255, 255, 255, 0.03);
+            color: $bluu-text-muted;
+            cursor: not-allowed;
         }
     }
 
@@ -985,6 +1000,63 @@
             top: 50%;
             left: 50%;
             width: 10px;
+            height: 2px;
+            background-color: currentColor;
+        }
+
+        &::before {
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+
+        &::after {
+            transform: translate(-50%, -50%) rotate(-45deg);
+        }
+
+        &:hover {
+            background-color: #E5484D;
+            color: $bluu-bg;
+        }
+    }
+
+    .tier-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        margin-bottom: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 10px;
+        background-color: rgba(0, 0, 0, 0.15);
+    }
+
+    .tier-select {
+        flex: 1 1 40%;
+    }
+
+    .tier-price,
+    .tier-quota {
+        flex: 1 1 25%;
+    }
+
+    .tier-remove-btn {
+        position: relative;
+        flex-shrink: 0;
+        width: 38px;
+        height: 38px;
+        border-radius: 8px;
+        border: 1px solid rgba(229, 72, 77, 0.4);
+        color: #E5484D;
+        background-color: rgba(229, 72, 77, 0.05);
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        &::before,
+        &::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 14px;
             height: 2px;
             background-color: currentColor;
         }

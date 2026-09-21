@@ -1,65 +1,67 @@
 @extends('layouts.admin')
 
 @section('content')
-<h3 class="fw-bold mb-1">Tambah Data Ticket Tier</h3>
-<p class="text-muted mb-4">Pilih Jadwal yang belum punya tier, lalu isi tier-nya (bisa lebih dari 1 sekaligus).</p>
+    <div class="admin-container">
 
-@php
-    $oldTiers = old('tiers');
-    if (!$oldTiers) {
-        $oldTiers = [['nama_tier' => '', 'harga' => '', 'kuota' => '']];
-    }
-@endphp
-
-<form action="{{ route('admin.tickettiers.store') }}" method="POST">
-    @csrf
-
-    <div class="mb-3">
-        <label class="form-label text-muted">Pilih Jadwal Tour</label>
-        <select name="jadwal_id" class="form-select" required>
-            <option value="">-- Pilih Jadwal --</option>
-            @foreach ($jadwals as $jadwal)
-                <option value="{{ $jadwal->id }}" {{ (old('jadwal_id', $selectedJadwalId)) == $jadwal->id ? 'selected' : '' }}>
-                    {{ $jadwal->tour->artist->nama_grup }} - {{ $jadwal->kota }} {{ \Carbon\Carbon::parse($jadwal->tanggal)->format('Y.m.d') }}
-                </option>
-            @endforeach
-        </select>
-    </div>
-
-    <label class="form-label fw-bold">Tier</label>
-    <div id="tier-list">
-        @foreach ($oldTiers as $index => $tier)
-            <div class="tier-row border rounded p-3 mb-2">
-                <div class="row g-2">
-                    <div class="col-md-4">
-                        <select name="tiers[{{ $index }}][nama_tier]" class="form-select" required>
-                            <option value="">-- Nama Tier --</option>
-                            @foreach (['VIP Soundcheck', 'Floor/Standing', 'CAT 1', 'CAT 2', 'CAT 3'] as $opsi)
-                                <option value="{{ $opsi }}" {{ ($tier['nama_tier'] ?? '') === $opsi ? 'selected' : '' }}>{{ $opsi }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <input type="number" name="tiers[{{ $index }}][harga]" class="form-control" value="{{ $tier['harga'] ?? '' }}" placeholder="Harga" min="0" required>
-                    </div>
-                    <div class="col-md-3">
-                        <input type="number" name="tiers[{{ $index }}][kuota]" class="form-control" value="{{ $tier['kuota'] ?? '' }}" placeholder="Kuota" min="0" required>
-                    </div>
-                    <div class="col-md-2 d-flex align-items-center">
-                        <button type="button" class="btn btn-outline-danger btn-remove-tier">x</button>
-                    </div>
-                </div>
+        <div class="admin-page-header">
+            <div>
+                <h3 class="fw-bold mb-1">Tambah Data Ticket Tier</h3>
+                <p class="text-muted mb-0" style="font-size: 0.85rem;">Pilih Jadwal yang belum punya tier, lalu isi tier-nya (bisa lebih dari 1 sekaligus).</p>
             </div>
-        @endforeach
-    </div>
+        </div>
 
-    <button type="button" id="btn-add-tier" class="btn btn-outline-dark btn-sm mb-4">+ TAMBAH TIER</button>
+        @php
+            $oldTiers = old('tiers');
+            if (empty($oldTiers)) {
+                $oldTiers = [['nama_tier' => '', 'harga' => '', 'kuota' => '']];
+            }
+        @endphp
 
-    <div>
-        <button type="submit" class="btn btn-dark">SIMPAN</button>
-        <a href="{{ route('admin.tickettiers.index') }}" class="btn btn-outline-secondary">BATAL</a>
+        <div class="admin-form-card mt-4">
+            <form action="{{ route('admin.tickettiers.store') }}" method="POST">
+                @csrf
+
+                <div class="mb-4">
+                    <label class="form-label text-muted">Pilih Jadwal Tour</label>
+                    <select name="jadwal_id" class="form-select @error('jadwal_id') is-invalid @enderror" required>
+                        <option value="">-- Pilih Jadwal --</option>
+                        @foreach ($jadwals as $jadwal)
+                            <option value="{{ $jadwal->id }}" {{ (old('jadwal_id', $selectedJadwalId)) == $jadwal->id ? 'selected' : '' }}>
+                                {{ $jadwal->tour->artist->nama_grup }} - {{ $jadwal->kota }} {{ \Carbon\Carbon::parse($jadwal->tanggal)->format('Y.m.d') }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <hr style="border-color: rgba(255,255,255,0.08); margin: 32px 0;">
+
+                <h6 class="fw-bold text-white mb-3" style="font-size: 0.95rem;">Tier</h6>
+                <div id="tier-list">
+                    @foreach ($oldTiers as $index => $tier)
+                        <div class="tier-row">
+                            <select name="tiers[{{ $index }}][nama_tier]" class="form-select tier-select" required>
+                                <option value="">-- Nama Tier --</option>
+                                @foreach (['VIP Soundcheck', 'Floor/Standing', 'CAT 1', 'CAT 2', 'CAT 3'] as $opsi)
+                                    <option value="{{ $opsi }}" {{ ($tier['nama_tier'] ?? '') === $opsi ? 'selected' : '' }}>{{ $opsi }}</option>
+                                @endforeach
+                            </select>
+                            <input type="number" name="tiers[{{ $index }}][harga]" class="form-control tier-price" value="{{ $tier['harga'] ?? '' }}" placeholder="Harga (Rp)" min="0" required>
+                            <input type="number" name="tiers[{{ $index }}][kuota]" class="form-control tier-quota" value="{{ $tier['kuota'] ?? '' }}" placeholder="Kuota" min="0" required>
+                            <button type="button" class="tier-remove-btn btn-remove-tier" aria-label="Hapus tier"></button>
+                        </div>
+                    @endforeach
+                </div>
+
+                <button type="button" id="btn-add-tier" class="admin-btn-success mb-4" style="padding: 8px 20px; font-size: 0.75rem; margin-top: 4px;">+ Tambah Tier</button>
+
+                <div class="admin-form-actions pt-3" style="border-top: 1px solid rgba(255,255,255,0.08);">
+                    <button type="submit" class="admin-btn-solid">Simpan</button>
+                    <a href="{{ route('admin.tickettiers.index') }}" class="admin-btn-outline">Batal</a>
+                </div>
+            </form>
+        </div>
+
     </div>
-</form>
 @endsection
 
 @push('scripts')
@@ -70,29 +72,19 @@ document.getElementById('btn-add-tier').addEventListener('click', function () {
     const container = document.getElementById('tier-list');
 
     const row = document.createElement('div');
-    row.className = 'tier-row border rounded p-3 mb-2';
+    row.className = 'tier-row';
     row.innerHTML = `
-        <div class="row g-2">
-            <div class="col-md-4">
-                <select name="tiers[${tierIndex}][nama_tier]" class="form-select" required>
-                    <option value="">-- Nama Tier --</option>
-                    <option value="VIP Soundcheck">VIP Soundcheck</option>
-                    <option value="Floor/Standing">Floor/Standing</option>
-                    <option value="CAT 1">CAT 1</option>
-                    <option value="CAT 2">CAT 2</option>
-                    <option value="CAT 3">CAT 3</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <input type="number" name="tiers[${tierIndex}][harga]" class="form-control" placeholder="Harga" min="0" required>
-            </div>
-            <div class="col-md-3">
-                <input type="number" name="tiers[${tierIndex}][kuota]" class="form-control" placeholder="Kuota" min="0" required>
-            </div>
-            <div class="col-md-2 d-flex align-items-center">
-                <button type="button" class="btn btn-outline-danger btn-remove-tier">x</button>
-            </div>
-        </div>
+        <select name="tiers[${tierIndex}][nama_tier]" class="form-select tier-select" required>
+            <option value="">-- Nama Tier --</option>
+            <option value="VIP Soundcheck">VIP Soundcheck</option>
+            <option value="Floor/Standing">Floor/Standing</option>
+            <option value="CAT 1">CAT 1</option>
+            <option value="CAT 2">CAT 2</option>
+            <option value="CAT 3">CAT 3</option>
+        </select>
+        <input type="number" name="tiers[${tierIndex}][harga]" class="form-control tier-price" placeholder="Harga (Rp)" min="0" required>
+        <input type="number" name="tiers[${tierIndex}][kuota]" class="form-control tier-quota" placeholder="Kuota" min="0" required>
+        <button type="button" class="tier-remove-btn btn-remove-tier" aria-label="Hapus tier"></button>
     `;
 
     container.appendChild(row);
@@ -106,7 +98,18 @@ document.getElementById('tier-list').addEventListener('click', function (e) {
         if (rows.length > 1) {
             e.target.closest('.tier-row').remove();
         } else {
-            alert('Minimal harus ada 1 tier.');
+            Swal.fire({
+                icon: 'warning',
+                title: 'Tidak bisa dihapus',
+                text: 'Minimal harus ada 1 tier.',
+                buttonsStyling: false,
+                customClass: {
+                    popup: 'bluu-swal-popup',
+                    title: 'bluu-swal-title',
+                    htmlContainer: 'bluu-swal-text',
+                    confirmButton: 'bluu-swal-confirm',
+                },
+            });
         }
     }
 });
@@ -119,7 +122,13 @@ document.getElementById('tier-list').addEventListener('click', function (e) {
                 icon: 'error',
                 title: 'Gagal',
                 text: '{!! $errors->first() !!}',
-                confirmButtonColor: '#212529',
+                buttonsStyling: false,
+                customClass: {
+                    popup: 'bluu-swal-popup',
+                    title: 'bluu-swal-title',
+                    htmlContainer: 'bluu-swal-text',
+                    confirmButton: 'bluu-swal-confirm',
+                },
             });
         });
     </script>
