@@ -10,7 +10,16 @@ class CheckInController extends Controller
 {
     public function index()
     {
-        return view('admin.checkin.index');
+        $riwayat = Ticket::with([
+                'order.user',
+                'order.ticketTier.jadwal.tour.artist',
+            ])
+            ->whereNotNull('checked_in_at')
+            ->orderByDesc('checked_in_at')
+            ->limit(20)
+            ->get();
+
+        return view('admin.checkin.index', compact('riwayat'));
     }
 
     public function store(Request $request)
