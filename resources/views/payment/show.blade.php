@@ -79,12 +79,12 @@ document.addEventListener('DOMContentLoaded', function () {
         const sisaMs = expiredAt - now;
         const sisaDetik = Math.floor(sisaMs / 1000);
 
-        if (sisaDetik <= 0) {
+        if (sisaMs <= 0) {
             timerText.innerText = '00:00';
             timerFill.style.width = '0%';
             btnBayar.disabled = true;
             clearInterval(interval);
-            window.location.reload();
+            setTimeout(function () { window.location.reload(); }, 1000);
             return;
         }
 
@@ -96,8 +96,8 @@ document.addEventListener('DOMContentLoaded', function () {
         timerFill.style.width = persen + '%';
     }
 
-    updateTimer();
     const interval = setInterval(updateTimer, 1000);
+    updateTimer();
 
     const radioBank = document.getElementById('kategori-bank');
     const radioEwallet = document.getElementById('kategori-ewallet');
