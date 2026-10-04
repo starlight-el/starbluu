@@ -1038,6 +1038,68 @@
         flex: 1 1 25%;
     }
 
+    .jadwal-check-list {
+        max-height: 320px;
+        overflow-y: auto;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 10px;
+        padding: 8px;
+        background-color: rgba(0, 0, 0, 0.15);
+
+        &::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: rgba($bluu-surface, 0.3);
+            border-radius: 4px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: rgba($bluu-accent, 0.4);
+            border-radius: 4px;
+
+            &:hover {
+                background: rgba($bluu-accent, 0.7);
+            }
+        }
+    }
+
+    .jadwal-check-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 8px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        color: $bluu-text;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.04);
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            background-color: transparent;
+            border: 2px solid rgba($bluu-accent, 0.6);
+            border-radius: 4px;
+            cursor: pointer;
+
+            &:checked {
+                background-color: $bluu-accent;
+                border-color: $bluu-accent;
+            }
+
+            &:focus {
+                box-shadow: 0 0 0 3px rgba($bluu-accent, 0.25);
+            }
+        }
+    }
+
     .tier-remove-btn {
         position: relative;
         flex-shrink: 0;

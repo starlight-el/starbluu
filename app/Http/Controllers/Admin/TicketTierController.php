@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Jadwal;
 use App\Models\TicketTier;
+use App\Models\Tour;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -31,21 +32,27 @@ class TicketTierController extends Controller
 
     public function create(Request $request)
     {
-        $jadwals = Jadwal::with('tour.artist')
-            ->withCount('ticketTiers')
-            ->orderBy('tanggal')
+        $tours = Tour::with('artist')
             ->get()
-            ->where('ticket_tiers_count', 0);
+            ->sortBy(function ($tour) {
+                return strtolower($tour->artist->nama_grup) . '-' . $tour->nama_tour;
+            })
+            ->values();
 
-        $selectedJadwalId = $request->query('jadwal_id');
+        $jadwalsByTour = Jadwal::withCount('ticketTiers')
+            ->get()
+            ->where('ticket_tiers_count', 0)
+            ->sortBy('tanggal')
+            ->groupBy('tour_id');
 
-        return view('admin.tickettier.create', compact('jadwals', 'selectedJadwalId'));
+        return view('admin.tickettier.create', compact('tours', 'jadwalsByTour'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'jadwal_id' => 'required|exists:jadwals,id',
+            'jadwal_ids' => 'required|array|min:1',
+            'jadwal_ids.*' => 'exists:jadwals,id',
             'tiers' => 'required|array|min:1',
             'tiers.*.nama_tier' => 'required|in:' . implode(',', $this->namaTierOptions),
             'tiers.*.harga' => 'required|numeric|min:0',
@@ -58,26 +65,30 @@ class TicketTierController extends Controller
             return back()->withErrors(['tiers' => 'Tidak boleh ada Nama Tier yang sama dalam 1 kali submit.'])->withInput();
         }
 
-        $sudahAda = TicketTier::where('jadwal_id', $request->jadwal_id)
+        $jadwalBermasalah = TicketTier::whereIn('jadwal_id', $request->jadwal_ids)
             ->whereIn('nama_tier', $namaTierList)
             ->exists();
 
-        if ($sudahAda) {
-            return back()->withErrors(['tiers' => 'Salah satu Nama Tier yang dipilih sudah ada untuk Jadwal ini.'])->withInput();
+        if ($jadwalBermasalah) {
+            return back()->withErrors(['tiers' => 'Salah satu jadwal yang dipilih sudah punya salah satu Nama Tier tersebut.'])->withInput();
         }
 
         DB::transaction(function () use ($request) {
-            foreach ($request->tiers as $tier) {
-                TicketTier::create([
-                    'jadwal_id' => $request->jadwal_id,
-                    'nama_tier' => $tier['nama_tier'],
-                    'harga' => $tier['harga'],
-                    'kuota' => $tier['kuota'],
-                ]);
+            foreach ($request->jadwal_ids as $jadwalId) {
+                foreach ($request->tiers as $tier) {
+                    TicketTier::create([
+                        'jadwal_id' => $jadwalId,
+                        'nama_tier' => $tier['nama_tier'],
+                        'harga' => $tier['harga'],
+                        'kuota' => $tier['kuota'],
+                    ]);
+                }
             }
         });
 
-        return redirect()->route('admin.tickettiers.index')->with('info', 'Data Ticket Tier berhasil ditambahkan.');
+        $jumlahJadwal = count($request->jadwal_ids);
+
+        return redirect()->route('admin.tickettiers.index')->with('info', "Data Ticket Tier berhasil ditambahkan ke $jumlahJadwal jadwal.");
     }
 
     public function edit(Jadwal $jadwal)
