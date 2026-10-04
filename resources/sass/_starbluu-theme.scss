@@ -485,14 +485,13 @@
     .jadwal-list {
         border-top: 2px solid $bluu-accent;
         padding: 0 12px;
-        margin: 0 -12px;
+        margin: 0 -12px 3rem;
     }
 
     .jadwal-row {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        gap: 16px;
+        gap: 28px;
         padding: 18px 12px;
         margin: 0 -12px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -509,22 +508,46 @@
             text-transform: uppercase;
             letter-spacing: 0.02em;
             color: $bluu-accent;
-            min-width: 110px;
+            width: 200px;
+            flex-shrink: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .jadwal-venue {
             flex: 1;
+            min-width: 0;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.01em;
             color: $bluu-text;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .jadwal-date {
             color: $bluu-text-muted;
             font-size: 0.85rem;
-            text-align: right;
-            min-width: 170px;
+            text-align: left;
+            width: 180px;
+            flex-shrink: 0;
+            margin-right: 8px;
+        }
+
+        .jadwal-action {
+            width: 150px;
+            flex-shrink: 0;
+
+            .btn-accent,
+            .btn-soldout {
+                display: block;
+                width: 100%;
+                padding-left: 0;
+                padding-right: 0;
+                text-align: center;
+            }
         }
     }
 
