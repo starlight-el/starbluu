@@ -44,11 +44,7 @@
                             </label>
                         </div>
 
-                        @if (Route::has('password.request'))
-                            <a class="auth-forgot-link" href="{{ route('password.request') }}" style="font-size: 0.75rem;">
-                                {{ __('Forgot Your Password?') }}
-                            </a>
-                        @endif
+                        
                     </div>
 
                     <button type="submit" class="btn-accent-solid" style="padding: 10px 22px; font-size: 0.8rem;">

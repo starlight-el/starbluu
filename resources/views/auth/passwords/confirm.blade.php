@@ -26,11 +26,7 @@
                 {{ __('Confirm Password') }}
             </button>
 
-            @if (Route::has('password.request'))
-                <p class="auth-switch">
-                    <a href="{{ route('password.request') }}">{{ __('Forgot Your Password?') }}</a>
-                </p>
-            @endif
+        
         </form>
     </div>
 </div>
