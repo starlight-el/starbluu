@@ -3,7 +3,7 @@
 @section('body-class', 'starbluu-theme')
 
 @section('content')
-<div class="container">
+<div class="container mb-5">
 
     <h3 class="page-title">Pembayaran</h3>
 
