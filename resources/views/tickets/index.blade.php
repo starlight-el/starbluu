@@ -23,7 +23,7 @@
                         @elseif ($order->status === 'pending')
                             <span class="ticket-badge ticket-badge-pending">Menunggu Bayar</span>
                         @elseif ($order->status === 'cancelled')
-                            <span class="ticket-badge ticket-badge-inactive">Dibatalkan</span>
+                            <span class="ticket-badge ticket-badge-cancelled">Dibatalkan</span>
                         @elseif ($order->status === 'expired')
                             <span class="ticket-badge ticket-badge-inactive">Expired</span>
                         @endif
