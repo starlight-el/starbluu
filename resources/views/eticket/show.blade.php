@@ -67,7 +67,7 @@
                 </button>
             </div>
 
-            <p class="text-center mb-0" style="font-size: 0.75rem; color: #888;">Tunjukkan barcode ini pada saat check-in di venue</p>
+            <p class="text-center mb-0" style="font-size: 0.75rem; color: #888;">Tunjukkan E-Ticket ini pada saat check-in di venue</p>
 
         </div>
     @endforeach
