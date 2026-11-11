@@ -14,7 +14,7 @@
             </div>
             <div class="col">
                 <div class="dash-stat-card p-3 text-center h-100">
-                    <p class="text-muted mb-1" style="font-size: 0.85rem;">Menunggu Bayar</p>
+                    <p class="text-muted mb-1" style="font-size: 0.85rem;">Transaksi Pending</p>
                     <h4 class="fw-bold mb-0 text-white">{{ $menungguBayar }}</h4>
                 </div>
             </div>
