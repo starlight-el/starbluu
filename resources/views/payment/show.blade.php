@@ -5,7 +5,7 @@
 @section('content')
 <div class="container">
 
-    <h3 class="page-title">Simulasi Pembayaran</h3>
+    <h3 class="page-title">Pembayaran</h3>
 
     <div class="expiry-timer">
         <div class="expiry-timer-fill" id="timer-fill"></div>
@@ -14,7 +14,31 @@
         </div>
     </div>
 
-    <p class="payment-total-label">Total Tagihan</p>
+    @php
+        $pemesan = auth()->user();
+        $jadwalPesanan = $orders->first()->ticketTier->jadwal;
+    @endphp
+
+    <div class="checkout-summary-box">
+        <div class="tier-info-row">
+            <span class="tier-info-label">Atas Nama</span>
+            <span class="tier-info-value">{{ $pemesan->name }}</span>
+        </div>
+        <div class="tier-info-row">
+            <span class="tier-info-label">Email</span>
+            <span class="tier-info-value">{{ $pemesan->email }}</span>
+        </div>
+        <div class="tier-info-row">
+            <span class="tier-info-label">Tour</span>
+            <span class="tier-info-value">{{ $jadwalPesanan->tour->nama_tour }}</span>
+        </div>
+        <div class="tier-info-row">
+            <span class="tier-info-label">Jadwal</span>
+            <span class="tier-info-value">{{ $jadwalPesanan->kota }}, {{ $jadwalPesanan->venue }} &middot; {{ \Carbon\Carbon::parse($jadwalPesanan->tanggal)->format('d M Y') }}</span>
+        </div>
+    </div>
+
+    <p class="payment-total-label">Total Pembayaran</p>
     <h3 class="payment-total-amount">Rp {{ number_format($totalBayar, 0, ',', '.') }}</h3>
 
     <form method="POST" action="{{ route('payment.process', $checkoutGroupId) }}" id="form-pembayaran">
@@ -59,8 +83,6 @@
         <button type="submit" class="btn-accent-solid" id="btn-bayar">BAYAR SEKARANG</button>
 
     </form>
-
-    <p class="helper-text text-center mt-4 pt-5 mb-3">*Simulasi: status pembayaran langsung dikonfirmasi "Lunas" jika masih dalam batas waktu checkout.</p>
 
 </div>
 @endsection
