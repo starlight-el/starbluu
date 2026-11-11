@@ -79,5 +79,53 @@
         @endforeach
     </div>
 
+    <h3 class="section-title text-center">Ticket Reservation Guide</h3>
+    <div class="guide-box">
+        <ol class="guide-steps">
+            <li class="guide-step">
+                <span class="guide-step-number">1</span>
+                <div class="guide-step-body">
+                    <h5>Pilih Artist</h5>
+                    <p>Pilih artis yang turnya masih tersedia melalui menu <strong>Tour</strong> atau <strong>World Tour</strong>.</p>
+                </div>
+            </li>
+            <li class="guide-step">
+                <span class="guide-step-number">2</span>
+                <div class="guide-step-body">
+                    <h5>Pilih Jadwal</h5>
+                    <p>Pada halaman detail artist, pilih jadwal konser yang berstatus <strong>Available</strong> dan klik <strong>Get Tickets</strong>.</p>
+                </div>
+            </li>
+            <li class="guide-step">
+                <span class="guide-step-number">3</span>
+                <div class="guide-step-body">
+                    <h5>Pilih Kategori Tiket</h5>
+                    <p>Tentukan tier tiket yang kamu inginkan. Batas maksimal pembelian adalah 2 tiket per jadwal.</p>
+                </div>
+            </li>
+            <li class="guide-step">
+                <span class="guide-step-number">4</span>
+                <div class="guide-step-body">
+                    <h5>Checkout</h5>
+                    <p>Periksa kembali rincian pesananmu agar tidak ada kesalahan, lalu lanjutkan pesanan.</p>
+                </div>
+            </li>
+            <li class="guide-step">
+                <span class="guide-step-number">5</span>
+                <div class="guide-step-body">
+                    <h5>Pembayaran</h5>
+                    <p>Segera selesaikan pembayaran sebelum batas waktu 10 menit berakhir agar pesanan tidak dibatalkan otomatis oleh sistem.</p>
+                </div>
+            </li>
+            <li class="guide-step">
+                <span class="guide-step-number">6</span>
+                <div class="guide-step-body">
+                    <h5>Tiket Digital Diterbitkan</h5>
+                    <p>Tiket akan otomatis terbit dan masuk ke menu <strong>My Tickets</strong>. Tiket ini sudah dilengkapi barcode dan kode khusus yang akan divalidasi saat proses check-in di venue.</p>
+                </div>
+            </li>
+        </ol>
+    </div>
+
 </div>
 @endsection
