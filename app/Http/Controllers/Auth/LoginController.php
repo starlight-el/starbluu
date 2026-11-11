@@ -22,6 +22,7 @@ class LoginController extends Controller
     */
 
     use AuthenticatesUsers;
+    use ResolvesCheckoutRedirect;
 
     /**
      * Where to redirect users after login.
@@ -53,6 +54,7 @@ class LoginController extends Controller
 
     /**
      * Tolak akun Admin yang login lewat halaman Login User biasa.
+     * Customer dikembalikan ke halaman Pilih Tier jika datang dari sana.
      */
     protected function authenticated(Request $request, $user)
     {
@@ -60,6 +62,12 @@ class LoginController extends Controller
             Auth::logout();
 
             return redirect()->route('admin.login')->with('info', 'Silakan login lewat halaman Admin.');
+        }
+
+        $tujuan = $this->tujuanKembali($request);
+
+        if ($tujuan) {
+            return redirect($tujuan);
         }
     }
 }

@@ -12,6 +12,11 @@
                 <p class="auth-subtitle" style="margin-bottom: 16px; font-size: 0.8rem;">Masuk untuk lanjut pesan tiket konser favoritmu.</p>
 
                 <form method="POST" action="{{ route('login') }}">
+                    @php $tujuan = old('redirect', request('redirect')); @endphp
+                    @if ($tujuan)
+                        <input type="hidden" name="redirect" value="{{ $tujuan }}">
+                    @endif
+                    
                     @csrf
 
                     <div class="mb-3">

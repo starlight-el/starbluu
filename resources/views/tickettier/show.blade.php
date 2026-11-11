@@ -71,7 +71,7 @@
             @endforeach
         </div>
 
-        <p class="helper-text">*Maksimal 2 tiket per akun</p>
+        <p class="helper-text">*Maksimal 2 tiket per jadwal</p>
 
         <div class="tier-total">
             <h5>Total</h5>
@@ -79,7 +79,7 @@
         </div>
 
         @guest
-            <a href="{{ route('login') }}" class="btn-accent-solid w-100">PROCEED TO CHECKOUT</a>
+            <a href="{{ route('login', ['redirect' => request()->getRequestUri()]) }}" class="btn-accent-solid w-100" id="btn-login-checkout">PROCEED TO CHECKOUT</a>
             <p class="helper-text mt-4">*Kamu perlu login/register dulu sebelum checkout</p>
         @else
             <button type="submit" class="btn-accent-solid w-100" id="btn-checkout">PROCEED TO CHECKOUT</button>
@@ -94,6 +94,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const maxTiketPerAkun = 2;
+    const kunciPilihan = 'starbluu_tier_{{ $jadwal->id }}';
 
     function hitungTotalTiket() {
         let total = 0;
@@ -126,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 Swal.fire({
                     icon: 'warning',
                     title: 'Batas Maksimal',
-                    text: 'Maksimal 2 tiket per akun.',
+                    text: 'Maksimal 2 tiket per jadwal.',
                     buttonsStyling: false,
                     customClass: {
                         popup: 'bluu-swal-popup',
@@ -158,6 +159,59 @@ document.addEventListener('DOMContentLoaded', function () {
             updateTotalHarga();
         });
     });
+
+    const tombolLoginCheckout = document.getElementById('btn-login-checkout');
+
+    if (tombolLoginCheckout) {
+        tombolLoginCheckout.addEventListener('click', function () {
+            const jumlah = {};
+
+            document.querySelectorAll('.input-jumlah').forEach(function (input) {
+                const nilai = parseInt(input.value);
+
+                if (nilai > 0) {
+                    jumlah[input.id.replace('jumlah-', '')] = nilai;
+                }
+            });
+
+            try {
+                sessionStorage.setItem(kunciPilihan, JSON.stringify({ waktu: Date.now(), jumlah: jumlah }));
+            } catch (e) {}
+        });
+    }
+
+    @auth
+    try {
+        const tersimpan = sessionStorage.getItem(kunciPilihan);
+
+        if (tersimpan) {
+            sessionStorage.removeItem(kunciPilihan);
+
+            const data = JSON.parse(tersimpan);
+
+            if (data && data.jumlah && (Date.now() - data.waktu) < 30 * 60 * 1000) {
+                let sisa = maxTiketPerAkun;
+
+                Object.keys(data.jumlah).forEach(function (tierId) {
+                    const input = document.getElementById('jumlah-' + tierId);
+
+                    if (!input || sisa <= 0) {
+                        return;
+                    }
+
+                    const boleh = Math.min(parseInt(data.jumlah[tierId]) || 0, parseInt(input.max), sisa);
+
+                    if (boleh > 0) {
+                        input.value = boleh;
+                        sisa -= boleh;
+                    }
+                });
+
+                updateTotalHarga();
+            }
+        }
+    } catch (e) {}
+    @endauth
 
     document.querySelectorAll('.btn-kurang').forEach(function (btn) {
         btn.addEventListener('click', function () {

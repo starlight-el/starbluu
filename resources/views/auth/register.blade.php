@@ -12,6 +12,10 @@
                 <p class="auth-subtitle" style="margin-bottom: 8px; font-size: 0.7rem;">Buat akun buat mulai pesan tiket konser favoritmu.</p>
 
                 <form method="POST" action="{{ route('register') }}">
+                    @php $tujuan = old('redirect', request('redirect')); @endphp
+                    @if ($tujuan)
+                        <input type="hidden" name="redirect" value="{{ $tujuan }}">
+                    @endif
                     @csrf
 
                     <div class="mb-1">
@@ -57,7 +61,7 @@
                     </button>
                 </form>
 
-                <p class="auth-switch mb-0" style="margin-top: 8px; font-size: 0.7rem;">{{ __('Sudah punya akun?') }} <a href="{{ route('login') }}">{{ __('Login di sini') }}</a></p>
+                <p class="auth-switch mb-0" style="margin-top: 8px; font-size: 0.7rem;">{{ __('Sudah punya akun?') }} <a href="{{ route('login', $tujuan ? ['redirect' => $tujuan] : []) }}">{{ __('Login di sini') }}</a>
             </div>
         </div>
 

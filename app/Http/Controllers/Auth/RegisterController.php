@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Tour;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -23,6 +24,7 @@ class RegisterController extends Controller
     */
 
     use RegistersUsers;
+    use ResolvesCheckoutRedirect;
 
     /**
      * Where to redirect users after registration.
@@ -77,5 +79,17 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+    /**
+     * Setelah register, kembalikan ke halaman Pilih Tier jika datang dari sana.
+     */
+    protected function registered(Request $request, $user)
+    {
+        $tujuan = $this->tujuanKembali($request);
+
+        if ($tujuan) {
+            return redirect($tujuan);
+        }
     }
 }
