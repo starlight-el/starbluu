@@ -101,19 +101,19 @@
                     </div>
 
                     <div class="footer-social">
-                        <a href="#" target="_blank" rel="noopener" aria-label="Instagram">
+                        <a href="https://www.instagram.com/babymonster_ygofficial/" target="_blank" rel="noopener" aria-label="Instagram">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                                 <rect x="3" y="3" width="18" height="18" rx="5"/>
                                 <circle cx="12" cy="12" r="4"/>
                                 <circle cx="17.5" cy="6.5" r="1"/>
                             </svg>
                         </a>
-                        <a href="#" target="_blank" rel="noopener" aria-label="TikTok">
+                        <a href="https://www.tiktok.com/@aespa_official" target="_blank" rel="noopener" aria-label="TikTok">
                             <svg viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M16.5 3c.3 2 1.8 3.6 3.8 3.9v3a7 7 0 0 1-3.8-1.1v6.4a5.9 5.9 0 1 1-5.9-5.9c.3 0 .6 0 .9.1v3.1a2.9 2.9 0 1 0 2 2.7V3h3z"/>
                             </svg>
                         </a>
-                        <a href="#" target="_blank" rel="noopener" aria-label="X">
+                        <a href="https://x.com/cortis_bighit" target="_blank" rel="noopener" aria-label="X">
                             <svg viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M18.9 3H22l-7.2 8.2L23 21h-6.7l-5.3-6.9L4.9 21H2l7.7-8.8L1 3h6.9l4.8 6.4L18.9 3zm-1.2 16h1.9L7.4 5H5.4l12.3 14z"/>
                             </svg>
