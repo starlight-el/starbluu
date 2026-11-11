@@ -1,6 +1,16 @@
 @extends('layouts.admin')
 
 @section('content')
+    @php
+        $profileUrl = route('admin.profile.edit');
+        $sebelumnya = url()->previous();
+
+        if (! str_starts_with($sebelumnya, $profileUrl)) {
+            session(['admin_profile_back' => $sebelumnya]);
+        }
+
+        $backUrl = session('admin_profile_back', route('admin.dashboard'));
+    @endphp
     <div class="admin-container">
 
         <div class="admin-page-header">
@@ -39,7 +49,7 @@
 
                 <div class="admin-form-actions pt-3" style="border-top: 1px solid rgba(255,255,255,0.08);">
                     <button type="submit" class="admin-btn-solid">Simpan Perubahan</button>
-                    <a href="{{ url()->previous() }}" class="admin-btn-outline">Batal</a>
+                    <a href="{{ $backUrl }}" class="admin-btn-outline">Batal</a>
                 </div>
             </form>
         </div>
