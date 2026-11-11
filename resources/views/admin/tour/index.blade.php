@@ -43,7 +43,7 @@
                             <td class="text-center">
                                 <div class="d-flex justify-content-center gap-2">
                                     <a href="{{ route('admin.tours.edit', $tour->id) }}" class="admin-action-btn btn-edit">Edit</a>
-                                    <form action="{{ route('admin.tours.destroy', $tour->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin mau hapus data Tour ini beserta seluruh jadwalnya?');">
+                                    <form action="{{ route('admin.tours.destroy', $tour->id) }}" method="POST" class="d-inline" data-confirm="Yakin mau hapus data Tour ini beserta seluruh jadwalnya?">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="admin-action-btn btn-delete">Hapus</button>

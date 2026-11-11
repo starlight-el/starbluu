@@ -69,6 +69,42 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.26.25/sweetalert2.all.min.js"></script>
 
+    <script>
+        document.addEventListener('submit', function (e) {
+            var form = e.target;
+            var pesan = form.getAttribute('data-confirm');
+
+            if (!pesan) {
+                return;
+            }
+
+            e.preventDefault();
+
+            Swal.fire({
+                icon: 'warning',
+                title: 'Konfirmasi Hapus',
+                text: pesan,
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Hapus',
+                cancelButtonText: 'Batal',
+                reverseButtons: true,
+                focusCancel: true,
+                buttonsStyling: false,
+                customClass: {
+                    popup: 'bluu-swal-popup',
+                    title: 'bluu-swal-title',
+                    htmlContainer: 'bluu-swal-text',
+                    confirmButton: 'bluu-swal-confirm bluu-swal-danger',
+                    cancelButton: 'bluu-swal-cancel',
+                },
+            }).then(function (result) {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    </script>
+
     @if (session('error'))
         <script>
             Swal.fire({
