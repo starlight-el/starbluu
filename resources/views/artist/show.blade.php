@@ -12,6 +12,14 @@
             'world-tour' => route('tour.world'),
             default => route('landing'),
         };
+
+        $jadwals = $tour
+            ? $tour->jadwals->sortBy(fn ($j) => $j->tanggal . ' ' . $j->jam)->values()
+            : collect();
+
+        $jumlahAvailable = $jadwals->filter(fn ($j) => $j->ticketTiers->sum('kuota') > 0)->count();
+        $jumlahSoldOut = $jadwals->count() - $jumlahAvailable;
+        $tabDefault = $jumlahAvailable > 0 ? 'available' : 'all';
     @endphp
 
     <a href="{{ $backUrl }}" class="back-link">&lt; Kembali</a>
@@ -55,12 +63,27 @@
 
     <h4 class="tour-dates-title mt-5">Tour Dates and Tickets</h4>
 
+    @if ($jadwals->isNotEmpty())
+        <div class="jadwal-tabs" role="tablist">
+            <button type="button" class="jadwal-tab {{ $tabDefault === 'all' ? 'active' : '' }}" data-filter="all" role="tab" aria-selected="{{ $tabDefault === 'all' ? 'true' : 'false' }}">
+                All <span class="jadwal-tab-count">({{ $jadwals->count() }})</span>
+            </button>
+            <button type="button" class="jadwal-tab {{ $tabDefault === 'available' ? 'active' : '' }}" data-filter="available" role="tab" aria-selected="{{ $tabDefault === 'available' ? 'true' : 'false' }}">
+                Available <span class="jadwal-tab-count">({{ $jumlahAvailable }})</span>
+            </button>
+            <button type="button" class="jadwal-tab" data-filter="soldout" role="tab" aria-selected="false">
+                Sold Out <span class="jadwal-tab-count">({{ $jumlahSoldOut }})</span>
+            </button>
+        </div>
+    @endif
+
     <div class="jadwal-list">
-        @forelse ($tour->jadwals ?? [] as $jadwal)
+        @forelse ($jadwals as $jadwal)
             @php
                 $totalKuota = $jadwal->ticketTiers->sum('kuota');
+                $status = $totalKuota > 0 ? 'available' : 'soldout';
             @endphp
-            <div class="jadwal-row">
+            <div class="jadwal-row" data-status="{{ $status }}" @if ($tabDefault !== 'all' && $tabDefault !== $status) hidden @endif>
                 <div class="jadwal-kota">{{ $jadwal->kota }}</div>
                 <div class="jadwal-venue">{{ $jadwal->venue }}</div>
                 <div class="jadwal-date">
@@ -80,7 +103,63 @@
         @empty
             <p class="text-muted">Belum ada jadwal tour.</p>
         @endforelse
+
+        @if ($jadwals->isNotEmpty())
+            <p class="jadwal-empty" id="jadwal-empty" hidden></p>
+        @endif
     </div>
 
 </div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const tabs = document.querySelectorAll('.jadwal-tab');
+    const rows = document.querySelectorAll('.jadwal-row');
+    const emptyEl = document.getElementById('jadwal-empty');
+
+    if (!tabs.length) {
+        return;
+    }
+
+    const pesanKosong = {
+        available: 'Semua jadwal tour ini sudah sold out.',
+        soldout: 'Belum ada jadwal yang sold out.',
+        all: 'Belum ada jadwal tour.',
+    };
+
+    function terapkanFilter(filter) {
+        let tampil = 0;
+
+        rows.forEach(function (row) {
+            const cocok = filter === 'all' || row.dataset.status === filter;
+            row.hidden = !cocok;
+
+            if (cocok) {
+                tampil++;
+            }
+        });
+
+        emptyEl.textContent = pesanKosong[filter];
+        emptyEl.hidden = tampil > 0;
+    }
+
+    tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+            tabs.forEach(function (t) {
+                t.classList.remove('active');
+                t.setAttribute('aria-selected', 'false');
+            });
+
+            tab.classList.add('active');
+            tab.setAttribute('aria-selected', 'true');
+
+            terapkanFilter(tab.dataset.filter);
+        });
+    });
+
+    terapkanFilter(document.querySelector('.jadwal-tab.active').dataset.filter);
+});
+</script>
+@endpush
