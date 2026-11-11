@@ -34,12 +34,13 @@
 
             <div class="admin-detail-actions">
                 <a href="{{ route('admin.admins.index') }}" class="admin-btn-outline">Kembali</a>
-                <a href="{{ route('admin.admins.edit', $admin->id) }}" class="admin-btn-success">Edit</a>
-                <form action="{{ route('admin.admins.destroy', $admin->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin mau hapus data Admin ini?');">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="admin-btn-danger">Hapus</button>
-                </form>
+                @if ($admin->id !== Auth::id())
+                    <form action="{{ route('admin.admins.destroy', $admin->id) }}" method="POST" class="d-inline" data-confirm="Yakin mau hapus data Admin ini?">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="admin-btn-danger">Hapus</button>
+                    </form>
+                @endif
             </div>
         </div>
 

@@ -45,12 +45,13 @@
                             <td class="text-center">
                                 <div class="d-flex justify-content-center gap-2">
                                     <a href="{{ route('admin.admins.show', $admin->id) }}" class="admin-action-btn btn-detail">Detail</a>
-                                    <a href="{{ route('admin.admins.edit', $admin->id) }}" class="admin-action-btn btn-edit">Edit</a>
-                                    <form action="{{ route('admin.admins.destroy', $admin->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin mau hapus data Admin ini?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="admin-action-btn btn-delete">Hapus</button>
-                                    </form>
+                                    @if ($admin->id !== Auth::id())
+                                        <form action="{{ route('admin.admins.destroy', $admin->id) }}" method="POST" class="d-inline" data-confirm="Yakin mau hapus data Admin ini?">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="admin-action-btn btn-delete">Hapus</button>
+                                        </form>
+                                    @endif
                                 </div>
                             </td>
                         </tr>

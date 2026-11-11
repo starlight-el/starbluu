@@ -104,6 +104,10 @@ class AdminController extends Controller
     {
         abort_if($admin->role !== 'admin', 404);
 
+        if ($admin->id === Auth::id()) {
+            return back()->with('error', 'Kamu tidak bisa menghapus akunmu sendiri.');
+        }
+
         $totalAdmin = User::where('role', 'admin')->count();
 
         if ($totalAdmin <= 1) {
