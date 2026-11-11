@@ -8,7 +8,18 @@
                 <h3 class="fw-bold mb-1">Kelola Data Ticket Tier</h3>
                 <p class="text-muted mb-0" style="font-size: 0.85rem;">Manajemen tier tiket untuk setiap jadwal konser Starbluu.</p>
             </div>
-            <a href="{{ route('admin.tickettiers.create') }}" class="btn btn-dark">+ TAMBAH DATA</a>
+            <div class="admin-header-actions">
+                <form method="GET" action="{{ route('admin.tickettiers.index') }}" class="m-0">
+                    <select name="artist" class="form-select tier-filter-select" onchange="this.form.submit()">
+                        <option value="">Semua Artist</option>
+                        @foreach ($artists as $artist)
+                            <option value="{{ $artist->id }}" {{ (string) $artistId === (string) $artist->id ? 'selected' : '' }}>{{ $artist->nama_grup }}</option>
+                        @endforeach
+                    </select>
+                </form>
+                
+                <a href="{{ route('admin.tickettiers.create') }}" class="btn btn-dark">+ TAMBAH DATA</a>
+            </div>
         </div>
 
         <div class="admin-card mt-4">
@@ -38,7 +49,7 @@
                                 <div class="d-flex justify-content-center gap-2">
                                     @if ($jadwal->ticket_tiers_count > 0)
                                         <a href="{{ route('admin.tickettiers.edit', $jadwal->id) }}" class="admin-action-btn btn-edit">Edit</a>
-                                        <form action="{{ route('admin.tickettiers.destroy', $jadwal->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin mau hapus SEMUA Ticket Tier untuk jadwal ini?');">
+                                        <form action="{{ route('admin.tickettiers.destroy', $jadwal->id) }}" method="POST" class="d-inline" data-confirm="Yakin mau hapus SEMUA Ticket Tier untuk jadwal ini?">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="admin-action-btn btn-delete">Hapus</button>
@@ -59,6 +70,12 @@
                     @endforelse
                 </tbody>
             </table>
+
+            @if ($jadwals->hasPages())
+                <div class="admin-pagination-wrap">
+                    {{ $jadwals->links('pagination.starbluu') }}
+                </div>
+            @endif
         </div>
 
     </div>

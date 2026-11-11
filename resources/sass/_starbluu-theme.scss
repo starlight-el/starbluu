@@ -482,6 +482,66 @@
         }
     }
 
+    .jadwal-tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 1rem;
+    }
+
+    .jadwal-tab {
+        background-color: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 999px;
+        color: $bluu-text-muted;
+        font-weight: 600;
+        font-size: 0.8rem;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        padding: 8px 20px;
+        cursor: pointer;
+        transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+
+        .jadwal-tab-count {
+            font-weight: 400;
+            opacity: 0.8;
+        }
+
+        &:hover {
+            color: $bluu-accent;
+            border-color: rgba($bluu-accent, 0.7);
+            background-color: transparent;
+            transform: translateY(-3px);
+        }
+
+        &:active {
+            transform: translateY(0) scale(0.97);
+        }
+
+        &.active {
+            background-color: rgba($bluu-accent, 0.15);
+            border-color: rgba($bluu-accent, 0.7);
+            color: $bluu-accent;
+        }
+
+        &:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba($bluu-accent, 0.25);
+        }
+    }
+
+    .jadwal-row[hidden],
+    .jadwal-empty[hidden] {
+        display: none;
+    }
+
+    .jadwal-empty {
+        padding: 40px 12px;
+        margin: 0;
+        text-align: center;
+        color: $bluu-text;
+        font-size: 0.95rem;
+    }
+
     .jadwal-list {
         border-top: 2px solid $bluu-accent;
         padding: 0 12px;
@@ -1057,6 +1117,11 @@
         border: 1px solid rgba(255, 255, 255, 0.3);
     }
 
+    .ticket-badge-cancelled {
+        color: #E5484D;
+        border: 1px solid rgba(229, 72, 77, 0.7);
+    }
+
     .btn-disabled-outline {
         display: block;
         width: 100%;
@@ -1485,6 +1550,16 @@
             font-size: 1.1rem;
         }
 
+        .jadwal-tabs {
+            gap: 6px;
+        }
+
+        .jadwal-tab {
+            flex: 1;
+            padding: 8px 6px;
+            font-size: 0.7rem;
+        }
+
         .jadwal-row {
             flex-wrap: wrap;
 
@@ -1575,8 +1650,10 @@
         color: $bluu-bg; 
     }
 
-    &:focus {
-        box-shadow: 0 0 0 3px rgba($bluu-accent, 0.35);
+    &:focus,
+    &:focus-visible {
+        outline: none;
+        box-shadow: none;
     }
 }
 
@@ -1586,4 +1663,37 @@
 
 .swal2-container.swal2-backdrop-show {
     background-color: rgba(0, 0, 0, 0.7);
+}
+
+.swal2-popup.bluu-swal-popup .swal2-confirm.bluu-swal-danger {
+    color: #E5484D;
+    border-color: rgba(229, 72, 77, 0.7);
+
+    &:hover {
+        background-color: #E5484D;
+        color: $bluu-bg;
+    }
+}
+
+.swal2-popup.bluu-swal-popup .swal2-cancel.bluu-swal-cancel {
+    background-color: transparent;
+    color: $bluu-text-muted;
+    font-weight: 700;
+    border-radius: 8px;
+    padding: 10px 26px;
+    box-shadow: none;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    margin-right: 15px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+    &:hover {
+        background-color: $bluu-text-muted;
+        color: $bluu-bg;
+    }
+
+    &:focus,
+    &:focus-visible {
+        outline: none;
+        box-shadow: none;
+    }
 }

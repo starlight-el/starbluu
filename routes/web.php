@@ -58,10 +58,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::resource('artists', AdminArtistController::class)->except(['show']);
         Route::resource('tours', AdminTourController::class)->except(['show']);
-        Route::resource('admins', AdminController::class);
+        Route::resource('admins', AdminController::class)->except(['edit', 'update']);
         Route::get('/ticket-tiers', [AdminTicketTierController::class, 'index'])->name('tickettiers.index');
         Route::get('/ticket-tiers/create', [AdminTicketTierController::class, 'create'])->name('tickettiers.create');
         Route::post('/ticket-tiers', [AdminTicketTierController::class, 'store'])->name('tickettiers.store');
+        Route::get('/ticket-tiers/bulk-quota', [AdminTicketTierController::class, 'bulkQuota'])->name('tickettiers.bulkquota');
+        Route::post('/ticket-tiers/bulk-quota', [AdminTicketTierController::class, 'bulkQuotaUpdate'])->name('tickettiers.bulkquota.update');
         Route::get('/ticket-tiers/{jadwal}/edit', [AdminTicketTierController::class, 'edit'])->name('tickettiers.edit');
         Route::put('/ticket-tiers/{jadwal}', [AdminTicketTierController::class, 'update'])->name('tickettiers.update');
         Route::delete('/ticket-tiers/{jadwal}', [AdminTicketTierController::class, 'destroy'])->name('tickettiers.destroy');

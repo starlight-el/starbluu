@@ -1346,4 +1346,69 @@
         font-size: 0.75rem;
         margin-top: 2px;
     }
+
+    .admin-header-actions {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .tier-filter-select {
+        width: 200px;
+        height: 38px;
+        padding: 6px 36px 6px 14px;
+        font-size: 0.85rem;
+    }
+
+    .jadwal-check-meta {
+        margin-left: auto;
+        color: $bluu-text-muted;
+        font-size: 0.75rem;
+        white-space: nowrap;
+    }
+
+    .admin-pagination-wrap {
+        padding: 16px 0 12px;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .pagination {
+        margin: 0;
+        gap: 4px;
+
+        .page-link {
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 8px;
+            margin-left: 0;
+            color: $bluu-text-muted;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 6px 12px;
+            transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+
+            &:hover {
+                background-color: rgba($bluu-accent, 0.15);
+                border-color: rgba($bluu-accent, 0.5);
+                color: $bluu-accent;
+            }
+
+            &:focus {
+                box-shadow: 0 0 0 3px rgba($bluu-accent, 0.2);
+            }
+        }
+
+        .page-item.active .page-link {
+            background-color: $bluu-accent;
+            border-color: $bluu-accent;
+            color: $bluu-bg;
+        }
+
+        .page-item.disabled .page-link {
+            background-color: transparent;
+            border-color: rgba(255, 255, 255, 0.06);
+            color: rgba($bluu-text-muted, 0.4);
+        }
+    }
 }

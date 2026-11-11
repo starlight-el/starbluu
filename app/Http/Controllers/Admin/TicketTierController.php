@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Artist;
 use App\Models\Jadwal;
 use App\Models\TicketTier;
 use App\Models\Tour;
@@ -19,15 +20,28 @@ class TicketTierController extends Controller
         'CAT 3',
     ];
 
-    public function index()
+    public function index(Request $request)
     {
-        $jadwals = Jadwal::with('tour.artist')->withCount('ticketTiers')->get()
-            ->sortBy(function ($jadwal) {
-                return strtolower($jadwal->tour->artist->nama_grup) . '-' . $jadwal->tanggal;
-            })
-            ->values();
+        $artistId = $request->query('artist');
 
-        return view('admin.tickettier.index', compact('jadwals'));
+        $jadwals = Jadwal::query()
+            ->select('jadwals.*')
+            ->join('tours', 'jadwals.tour_id', '=', 'tours.id')
+            ->join('artists', 'tours.artist_id', '=', 'artists.id')
+            ->with('tour.artist')
+            ->withCount('ticketTiers')
+            ->when($artistId, function ($query) use ($artistId) {
+                $query->where('tours.artist_id', $artistId);
+            })
+            ->orderByRaw('LOWER(artists.nama_grup)')
+            ->orderBy('jadwals.tanggal')
+            ->orderBy('jadwals.id')
+            ->paginate(10)
+            ->withQueryString();
+
+        $artists = Artist::orderBy('nama_grup')->get();
+
+        return view('admin.tickettier.index', compact('jadwals', 'artists', 'artistId'));
     }
 
     public function create(Request $request)
@@ -89,6 +103,49 @@ class TicketTierController extends Controller
         $jumlahJadwal = count($request->jadwal_ids);
 
         return redirect()->route('admin.tickettiers.index')->with('info', "Data Ticket Tier berhasil ditambahkan ke $jumlahJadwal jadwal.");
+    }
+
+    public function bulkQuota()
+    {
+        $tours = Tour::with('artist')
+            ->get()
+            ->sortBy(function ($tour) {
+                return strtolower($tour->artist->nama_grup) . '-' . $tour->nama_tour;
+            })
+            ->values();
+
+        $jadwalsByTour = Jadwal::withCount('ticketTiers')
+            ->withSum('ticketTiers', 'kuota')
+            ->get()
+            ->where('ticket_tiers_count', '>', 0)
+            ->sortBy('tanggal')
+            ->groupBy('tour_id');
+
+        return view('admin.tickettier.bulk-quota', compact('tours', 'jadwalsByTour'));
+    }
+
+    public function bulkQuotaUpdate(Request $request)
+    {
+        $request->validate([
+            'jadwal_ids' => 'required|array|min:1',
+            'jadwal_ids.*' => 'exists:jadwals,id',
+            'kuota' => 'required|integer|min:0',
+        ], [
+            'jadwal_ids.required' => 'Pilih minimal 1 jadwal.',
+            'jadwal_ids.min' => 'Pilih minimal 1 jadwal.',
+            'kuota.required' => 'Kuota wajib diisi.',
+            'kuota.integer' => 'Kuota harus berupa angka bulat.',
+            'kuota.min' => 'Kuota tidak boleh kurang dari 0.',
+        ]);
+
+        DB::transaction(function () use ($request) {
+            TicketTier::whereIn('jadwal_id', $request->jadwal_ids)
+                ->update(['kuota' => $request->kuota]);
+        });
+
+        $jumlahJadwal = count($request->jadwal_ids);
+
+        return redirect()->route('admin.tickettiers.index')->with('info', "Kuota berhasil diubah menjadi {$request->kuota} pada $jumlahJadwal jadwal.");
     }
 
     public function edit(Jadwal $jadwal)
